@@ -63,5 +63,7 @@ h1 span{background:linear-gradient(90deg,#f2b52d,#ffe08a);-webkit-background-cli
 button.gold,.gold{box-shadow:0 4px 18px rgba(242,181,45,.3)}
 
 html{background:#050a14!important}
-body::before{background:linear-gradient(180deg,rgba(5,10,20,.40),rgba(5,10,20,.62)),url("bg.jpg?v=3") center/cover no-repeat!important;animation:none!important}
+body::before{background:linear-gradient(180deg,rgba(5,10,20,.40),rgba(5,10,20,.62)),url("bg.jpg?v=5") center/cover no-repeat!important;animation:none!important}
 body::after{display:none!important}
+
+.fm{text-align:center;font-size:20px;margin:14px 0}.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 8px;font-size:18px}.fr>span:first-child{border-bottom:2px solid currentColor;padding:0 10px 3px}.fr>span:last-child{padding-top:3px}

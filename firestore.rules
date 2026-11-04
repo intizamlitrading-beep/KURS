@@ -1,0 +1,30 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ADMIN EMAIL: kishi háripler menen, firebase-config.js tegi menen birdey bolsın
+    function isAdmin() {
+      return request.auth != null && request.auth.token.email.lower() in ['admin@example.com'];
+    }
+    function signedIn() { return request.auth != null; }
+
+    // Oqıwshı profilleri
+    match /users/{uid} {
+      allow read: if isAdmin() || (signedIn() && request.auth.uid == uid);
+      allow create: if signedIn() && request.auth.uid == uid
+        && request.resource.data.unlocked.size() == 0;
+      allow update: if isAdmin() || (signedIn() && request.auth.uid == uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['lastLogin','viewed','name']));
+    }
+    // Temalar dizimi (atı, sıpatlaması) — kirgen hámmege kórinedi
+    match /topics/{id} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+    // Sabaqlıq mazmunı — tek admin ashqan oqıwshıǵa
+    match /content/{id} {
+      allow read: if isAdmin() || (signedIn()
+        && id in get(/databases/$(database)/documents/users/$(request.auth.uid)).data.unlocked);
+      allow write: if isAdmin();
+    }
+  }
+}

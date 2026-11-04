@@ -61,3 +61,7 @@ header img{box-shadow:0 0 14px rgba(242,181,45,.5)}
 .tc:not(.off):hover{box-shadow:0 0 22px rgba(242,181,45,.25)}
 h1 span{background:linear-gradient(90deg,#f2b52d,#ffe08a);-webkit-background-clip:text;background-clip:text;color:transparent}
 button.gold,.gold{box-shadow:0 4px 18px rgba(242,181,45,.3)}
+
+html{background:#050a14!important}
+body::before{background:linear-gradient(180deg,rgba(5,10,20,.40),rgba(5,10,20,.62)),url("bg.jpg?v=3") center/cover no-repeat!important;animation:none!important}
+body::after{display:none!important}

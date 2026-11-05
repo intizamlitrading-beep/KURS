@@ -8,7 +8,7 @@ const auth = A.getAuth(fapp), db = F.getFirestore(fapp);
 const root = document.getElementById("app");
 const $ = (s, r = document) => r.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const fx = s => String(s || "").replace(/assets\/img\//g, "").replace(/src="([\w-]+\.jpg)"/g, 'src="$1?v=5"');
+const fx = s => String(s || "").replace(/assets\/img\//g, "").replace(/src="([\w-]+\.jpg)"/g, 'src="$1?v=6"');
 const fmt = t => t && t.toDate ? t.toDate().toLocaleString("ru-RU") : "—";
 const ADM = ADMIN_EMAILS.map(x => x.toLowerCase());
 const ERR = {
@@ -24,7 +24,7 @@ const uref = () => F.doc(db, "users", me.uid);
 
 /* ---------- Kiriw / dizimnen ótiw / parol tiklaw ---------- */
 function authView(mode = "in", note = "") {
-  root.innerHTML = `<div class="auth"><div style="text-align:center"><img src="logo.jpg?v=5" width="90" style="border-radius:50%"><h2>Intizamli Trading</h2><small style="color:var(--mut)">Intizam • Sabır • Natije</small></div>
+  root.innerHTML = `<div class="auth"><div style="text-align:center"><img src="logo.jpg?v=6" width="90" style="border-radius:50%"><h2>Intizamli Trading</h2><small style="color:var(--mut)">Intizam • Sabır • Natije</small></div>
   <div class="tabs" style="margin-top:16px"><button data-m="in" class="${mode == "in" ? "on" : ""}">Kiriw</button><button data-m="up" class="${mode == "up" ? "on" : ""}">Dizimnen ótiw</button></div>
   <form id="f">${mode == "up" ? `<label>Atıńız</label><input id="n" required>` : ""}
   <label>Email</label><input id="e" type="email" required autocomplete="email">
@@ -65,7 +65,7 @@ A.onAuthStateChanged(auth, async u => {
   root.innerHTML = '<p style="text-align:center;margin-top:80px">Júklenbekte…</p>';
   try { await loadProfile(); await loadTopics(); home(); } catch (e) { root.innerHTML = `<div class="auth"><p class="err">${esc(msg(e))}</p><button class="gold full" id="lo">Shıǵıw</button></div>`; $("#lo").onclick = () => A.signOut(auth); }
 });
-const head = (extra = "") => `<header><img src="logo.jpg?v=5" alt="logo" id="lg"><div><b>INTIZAMLI_TRADING</b><br><small style="color:var(--mut)">${esc(prof.name)} · ${esc(me.email)}</small></div><div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap">${extra}${isAdmin ? '<button id="adm">⚙ Admin</button>' : ""}<button id="out">Shıǵıw</button></div></header>`;
+const head = (extra = "") => `<header><img src="logo.jpg?v=6" alt="logo" id="lg"><div><b>INTIZAMLI_TRADING</b><br><small style="color:var(--mut)">${esc(prof.name)} · ${esc(me.email)}</small></div><div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap">${extra}${isAdmin ? '<button id="adm">⚙ Admin</button>' : ""}<button id="out">Shıǵıw</button></div></header>`;
 function bindHead() {
   $("#out").onclick = () => A.signOut(auth); const a = $("#adm"); if (a) a.onclick = () => admin("stats"); $("#lg").onclick = home;
 }
@@ -177,8 +177,9 @@ function slideEd(i) {
 
 /* ---------- Sazlaw ---------- */
 function aSet() {
-  $("#ab").innerHTML = `<div class="box"><b>Bastapqı mazmunnı júklew</b><p>Barlıq 9 tema hám slaydtı bazaǵa júkleydi. <b class="dn">Ózgertken tekstleriń óship, bastapqı variantqa qaytadı.</b> Tek birinshi ret yamasa qayta tiklew ushın.</p><button class="gold" id="sd">Bastapqı mazmunnı júklew</button><div id="sm"></div></div>
+  $("#ab").innerHTML = `<div class="box"><b>Bastapqı mazmunnı júklew</b><p>Barlıq 11 tema hám slaydtı bazaǵa júkleydi. <b class="dn">Ózgertken tekstleriń óship, bastapqı variantqa qaytadı.</b> Tek birinshi ret yamasa qayta tiklew ushın.</p><button class="gold" id="sd">Bastapqı mazmunnı júklew</button><div id="sm"></div></div>
   <div class="box" style="margin-top:12px"><b>Jańa temalardı qosıw</b><p>content.json daǵı bazada joq temalardı ǵana qosadı. Ózgertken tekstlerge tiymeydi.</p><button class="gold" id="sn">Jetispegen temalardı qosıw</button><div id="sq"></div></div>
+  <div class="box" style="margin-top:12px"><b>Jańa ózgertiwlerdi qollanıw (patch)</b><p>patch.json daǵı túzetilgen slaydlardı ǵana almastıradı (sol slaydlar jańa variantqa aylanadı). Basqa slaydlardaǵı ózgertiwleriń saqlanadı. Jańa temalar ushın "Jetispegen temalardı qosıw" túymesin basıń.</p><button class="gold" id="sp">Patch qollanıw</button><div id="spm"></div></div>
   <div class="box" style="margin-top:12px"><b>Bir temanı jańalaw</b><p>Tańlaǵan temanı content.json daǵı jańa variantqa almastıradı (tek sol temanıń ózgertiwleri óshedi, basqa temalarǵa tiymeydi).</p><select id="rt"></select><button class="gold" id="rb">Usı temanı jańalaw</button><div id="rm"></div></div>
   <div class="box" style="margin-top:12px"><b>Admin:</b> ${esc(me.email)}<br><small>Admin emaili firebase-config.js hám firestore.rules da jazıladı.</small></div>`;
   (async () => { try { const d = await (await fetch("content.json?v=" + Date.now())).json(); $("#rt").innerHTML = d.map(t => `<option value="${t.id}">${esc(t.title)}</option>`).join(""); } catch (e) { } })();
@@ -188,6 +189,20 @@ function aSet() {
       await F.setDoc(F.doc(db, "content", id), { slides: t.slides }); await F.setDoc(F.doc(db, "topics", id), { title: t.title, desc: t.desc, order: t.order, count: t.slides.length });
       $("#rm").innerHTML = '<p class="ok">Tayar ✓ ' + esc(t.title) + ' jańalandı (' + t.slides.length + ' slayd).</p>'; await loadTopics();
     } catch (e) { $("#rm").innerHTML = `<p class="err">${esc(msg(e))}</p>`; }
+  };
+  $("#sp").onclick = async () => {
+    if (!confirm("patch.json daǵı slaydlar jańa variantqa almasadı. Dawam etemiz be?")) return;
+    try {
+      $("#spm").textContent = "Júklenbekte…"; await loadTopics(); const d = await (await fetch("patch.json?v=" + Date.now())).json(); const by = {}; let rep = 0, add = 0;
+      d.items.forEach(x => (by[x.topic] = by[x.topic] || []).push(x));
+      for (const tid in by) {
+        const ref = F.doc(db, "content", tid), s = await F.getDoc(ref), slides = s.exists() ? s.data().slides : [];
+        for (const it of by[tid]) { let i = slides.findIndex(x => x.k === it.k); if (i < 0) i = slides.findIndex(x => x.h === it.slide.h); if (i >= 0) { slides[i] = it.slide; rep++; } else { slides.push(it.slide); add++; } }
+        await F.setDoc(ref, { slides }); const tp = topics.find(t => t.id == tid);
+        if (tp) await F.setDoc(F.doc(db, "topics", tid), { title: tp.title, desc: tp.desc, order: tp.order, count: slides.length });
+      }
+      $("#spm").innerHTML = `<p class="ok">Tayar ✓ ${rep} slayd jańalandı, ${add} slayd qosıldı (tabılmaǵanları sońına qosıladı).</p>`; await loadTopics();
+    } catch (e) { $("#spm").innerHTML = `<p class="err">${esc(msg(e))}</p>`; }
   };
   $("#sn").onclick = async () => {
     try {

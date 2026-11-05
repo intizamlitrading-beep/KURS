@@ -43,3 +43,7 @@ Firebase → Authentication → **Templates → Password reset**: tilin (Uzbek/R
 
 ## Jańa tema qosılǵanda
 Jańa `content.json` dı GitHub ke júkleseńiz, Admin → Sazlaw → **Jetispegen temalardı qosıw** túymesin basıń. Bul ózgertken tekstleriń óshirmeydi.
+
+## Jańa nusqa (v6) júklegennen soń
+1. Admin → Sazlaw → **Jetispegen temalardı qosıw** (Taymfreymler hám Sawda túrleri temaları qosıladı).
+2. Admin → Sazlaw → **Patch qollanıw** (túzetilgen slaydlar: Yapon shamı, Modeller suwretleri, Punkt/Pips). Basqa ózgertiwleriń saqlanadı.

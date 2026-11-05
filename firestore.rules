@@ -5,6 +5,7 @@ service cloud.firestore {
       return request.auth != null && request.auth.token.email.lower() in ['intizamlitrading@gmail.com'];
     }
     function signedIn() { return request.auth != null; }
+    function userDoc() { return get(/databases/$(database)/documents/users/$(request.auth.uid)).data; }
 
     match /users/{uid} {
       allow read: if isAdmin() || (signedIn() && request.auth.uid == uid);
@@ -19,7 +20,8 @@ service cloud.firestore {
     }
     match /content/{id} {
       allow read: if isAdmin() || (signedIn()
-        && id in get(/databases/$(database)/documents/users/$(request.auth.uid)).data.unlocked);
+        && id in userDoc().unlocked
+        && userDoc().accessUntil > request.time);
       allow write: if isAdmin();
     }
   }

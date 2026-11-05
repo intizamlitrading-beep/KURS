@@ -8,7 +8,7 @@ const auth = A.getAuth(fapp), db = F.getFirestore(fapp);
 const root = document.getElementById("app");
 const $ = (s, r = document) => r.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const fx = s => String(s || "").replace(/assets\/img\//g, "").replace(/src="([\w-]+\.jpg)"/g, 'src="$1?v=6"');
+const fx = s => String(s || "").replace(/assets\/img\//g, "").replace(/src="([\w-]+\.jpg)"/g, 'src="$1?v=7"');
 const fmt = t => t && t.toDate ? t.toDate().toLocaleString("ru-RU") : "—";
 const ADM = ADMIN_EMAILS.map(x => x.toLowerCase());
 const ERR = {
@@ -24,7 +24,7 @@ const uref = () => F.doc(db, "users", me.uid);
 
 /* ---------- Kiriw / dizimnen ótiw / parol tiklaw ---------- */
 function authView(mode = "in", note = "") {
-  root.innerHTML = `<div class="auth"><div style="text-align:center"><img src="logo.jpg?v=6" width="90" style="border-radius:50%"><h2>Intizamli Trading</h2><small style="color:var(--mut)">Intizam • Sabır • Natije</small></div>
+  root.innerHTML = `<div class="auth"><div style="text-align:center"><img src="logo.jpg?v=7" width="90" style="border-radius:50%"><h2>Intizamli Trading</h2><small style="color:var(--mut)">Intizam • Sabır • Natije</small></div>
   <div class="tabs" style="margin-top:16px"><button data-m="in" class="${mode == "in" ? "on" : ""}">Kiriw</button><button data-m="up" class="${mode == "up" ? "on" : ""}">Dizimnen ótiw</button></div>
   <form id="f">${mode == "up" ? `<label>Atıńız</label><input id="n" required>` : ""}
   <label>Email</label><input id="e" type="email" required autocomplete="email">
@@ -65,23 +65,37 @@ A.onAuthStateChanged(auth, async u => {
   root.innerHTML = '<p style="text-align:center;margin-top:80px">Júklenbekte…</p>';
   try { await loadProfile(); await loadTopics(); home(); } catch (e) { root.innerHTML = `<div class="auth"><p class="err">${esc(msg(e))}</p><button class="gold full" id="lo">Shıǵıw</button></div>`; $("#lo").onclick = () => A.signOut(auth); }
 });
-const head = (extra = "") => `<header><img src="logo.jpg?v=6" alt="logo" id="lg"><div><b>INTIZAMLI_TRADING</b><br><small style="color:var(--mut)">${esc(prof.name)} · ${esc(me.email)}</small></div><div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap">${extra}${isAdmin ? '<button id="adm">⚙ Admin</button>' : ""}<button id="out">Shıǵıw</button></div></header>`;
+const head = (extra = "") => `<header><img src="logo.jpg?v=7" alt="logo" id="lg"><div><b>INTIZAMLI_TRADING</b><br><small style="color:var(--mut)">${esc(prof.name)} · ${esc(me.email)}</small></div><div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap">${extra}${isAdmin ? '<button id="adm">⚙ Admin</button>' : ""}<button id="out">Shıǵıw</button></div></header>`;
 function bindHead() {
   $("#out").onclick = () => A.signOut(auth); const a = $("#adm"); if (a) a.onclick = () => admin("stats"); $("#lg").onclick = home;
 }
 
 /* ---------- Oqıwshı: temalar hám slaydlar ---------- */
+const DAY = 864e5, d2s = d => d.toLocaleDateString("ru-RU");
+const accEnd = p => p && p.accessUntil && p.accessUntil.toDate ? p.accessUntil.toDate() : null;
+const hasAcc = p => { const e = accEnd(p); return !!e && e.getTime() > Date.now(); };
+const seenOf = (p, id) => { const v = (p.viewed || {})[id]; if (!v) return []; if (Array.isArray(v.seen)) return v.seen; return v.max >= 0 ? Array.from({ length: v.max + 1 }, (_, i) => i) : []; };
+const isDone = (p, t) => !!t && t.count > 0 && seenOf(p, t.id).length >= t.count;
+const topicState = (t, i) => { if (isAdmin) return "open"; if (!(prof.unlocked || []).includes(t.id)) return "admin"; if (!hasAcc(prof)) return "expired"; if (i > 0 && !isDone(prof, topics[i - 1])) return "seq"; return "open"; };
+function accessBanner() {
+  if (isAdmin) return "";
+  const e = accEnd(prof);
+  if (!e) return '<div class="note" style="border-color:var(--gold)">Dostup elege berilmegen. Admin dostup bergennen soń sabaqlıqlar ashıladı (30 kún).</div>';
+  if (e.getTime() <= Date.now()) return `<div class="note">Dostup múddeti tawsıldı (${d2s(e)}). Dawam etiw ushın admin dostupti uzaytıradı.</div>`;
+  return `<div class="note" style="border-color:var(--up)">Dostup: <b>${d2s(e)}</b> shekem (${Math.ceil((e - Date.now()) / DAY)} kún qaldı)</div>`;
+}
 function home() {
-  const un = prof.unlocked || [];
-  root.innerHTML = head() + `<main><h1>Trading <span>kursı</span></h1><p class="sub">Sabaqlıqlar admin ruxsat bergen izbe-izlikte ashıladı.</p><div class="grid">` +
+  const TXT = { admin: "Admin ashqanda ashıladı", expired: "Dostup múddeti tawsıldı", seq: "Aldıńǵı temanı aqırına shekem kórseńiz ashıladı" };
+  root.innerHTML = head() + `<main><h1>Trading <span>kursı</span></h1><p class="sub">Sabaqlıqlar izbe-izlikte ashıladı: aldıńǵı temanı tolıq kórgennen soń keyingisi ashıladı.</p>${accessBanner()}<div class="grid">` +
     topics.map((t, i) => {
-      const open = isAdmin || un.includes(t.id), v = (prof.viewed || {})[t.id];
-      const pr = v && t.count ? Math.round(((v.max ?? 0) + 1) / t.count * 100) : 0;
-      return `<button class="tc ${open ? "" : "lock"}" ${open ? `data-t="${t.id}"` : "disabled"}><div class="n">${i + 1}-TEMA ${open ? "" : "🔒"}</div><h3>${esc(t.title)}</h3><p>${open ? esc(t.desc) : "Admin ashqanda ashıladı"}</p>${open && pr ? `<div class="bar" style="margin:10px 0 0"><i style="width:${pr}%"></i></div>` : ""}</button>`;
+      const st = topicState(t, i), open = st == "open", done = isDone(prof, t), seen = seenOf(prof, t.id).length;
+      const pr = t.count ? Math.min(100, Math.round(seen / t.count * 100)) : 0;
+      return `<button class="tc ${open ? "" : "lock"}" ${open ? `data-t="${t.id}"` : "disabled"}><div class="n">${i + 1}-TEMA ${done ? "✓" : open ? "" : "🔒"}</div><h3>${esc(t.title)}</h3><p>${open ? esc(t.desc) : TXT[st]}</p>${!isAdmin && open && pr ? `<div class="bar" style="margin:10px 0 0"><i style="width:${pr}%"></i></div>` : ""}</button>`;
     }).join("") + (topics.length ? "" : "<p>Elege sabaqlıq joq.</p>") + `</div></main>`;
   bindHead(); root.querySelectorAll("[data-t]").forEach(b => b.onclick = () => openTopic(b.dataset.t));
 }
 async function openTopic(id) {
+  { const ti = topics.findIndex(x => x.id == id); if (ti < 0 || topicState(topics[ti], ti) != "open") { alert("Bul tema házir ashılmaydı."); return home(); } }
   root.innerHTML = '<p style="text-align:center;margin-top:80px">Júklenbekte…</p>';
   let slides;
   try { const s = await F.getDoc(F.doc(db, "content", id)); slides = (s.exists() ? s.data().slides : []).map(x => ({ ...x, b: fx(x.b) })); }
@@ -89,22 +103,24 @@ async function openTopic(id) {
   const t = topics.find(x => x.id == id); let sl = Math.min(((prof.viewed || {})[id] || {}).slide || 0, Math.max(slides.length - 1, 0));
   const show = () => {
     const s = slides[sl] || { k: "", h: "Bos", b: "" };
-    root.innerHTML = head('<button id="hm">☰ Temalar</button>') + `<main><div class="n" style="color:var(--gold);font-weight:800">${esc(t.title)}</div><div class="bar"><i style="width:${(sl + 1) / Math.max(slides.length, 1) * 100}%"></i></div>
+    track(id, sl, slides.length); const seenSet = new Set(seenOf(prof, id)), allSeen = seenSet.size >= slides.length;
+    root.innerHTML = head('<button id="hm">☰ Temalar</button>') + `<main><div class="n" style="color:var(--gold);font-weight:800">${esc(t.title)}${isAdmin ? "" : ` · kórilgen ${Math.min(seenSet.size, slides.length)}/${slides.length}`}</div><div class="bar"><i style="width:${(sl + 1) / Math.max(slides.length, 1) * 100}%"></i></div>
     <div class="slide"><div class="k">${esc(s.k)}</div><h2>${esc(s.h)}</h2>${s.b}</div>
-    <div class="nav"><button id="pv" ${sl ? "" : "disabled"}>← Artqa</button><div class="dots">${slides.map((_, i) => `<i class="${i == sl ? "on" : ""}" data-i="${i}"></i>`).join("")}</div><button class="gold" id="nx">${sl < slides.length - 1 ? "Aldıńǵı →" : "Temalarǵa ✓"}</button></div></main>`;
+    <div class="nav"><button id="pv" ${sl ? "" : "disabled"}>← Artqa</button><div class="dots">${slides.map((_, i) => `<i class="${i == sl ? "on" : seenSet.has(i) ? "seen" : ""}" data-i="${i}"></i>`).join("")}</div><button class="gold" id="nx">${sl < slides.length - 1 ? "Aldıńǵı →" : allSeen || isAdmin ? "Tema tamam ✓ Temalarǵa" : "Temalarǵa"}</button></div>${sl == slides.length - 1 && !allSeen && !isAdmin ? '<div class="note">Keyingi tema ashılıwı ushın bul temanıń barlıq slaydın kóriw kerek (kórilmegen slaydlar kúnǵirt nokat).</div>' : ""}</main>`;
     bindHead(); $("#hm").onclick = home; $("#pv").onclick = () => { sl--; show(); };
     $("#nx").onclick = () => { sl < slides.length - 1 ? (sl++, show()) : home(); };
     root.querySelectorAll("[data-i]").forEach(d => d.onclick = () => { sl = +d.dataset.i; show(); });
     root.querySelectorAll("[data-go]").forEach(b => b.onclick = () => { sl = +b.dataset.go; show(); });
-    scrollTo(0, 0); track(id, sl, slides.length);
+    scrollTo(0, 0);
   };
   show();
 }
 async function track(id, sl, total) {
   if (isAdmin) return;
-  const old = (prof.viewed || {})[id] || {}, max = Math.max(old.max ?? -1, sl);
-  prof.viewed = { ...(prof.viewed || {}), [id]: { slide: sl, max, total, last: new Date() } };
-  try { await F.updateDoc(uref(), { ["viewed." + id]: { slide: sl, max, total, last: F.serverTimestamp() } }); } catch (e) { console.warn(e); }
+  const old = (prof.viewed || {})[id] || {}, seen = new Set(seenOf(prof, id)); seen.add(sl);
+  const max = Math.max(old.max ?? -1, sl), arr = [...seen].sort((x, y) => x - y);
+  prof.viewed = { ...(prof.viewed || {}), [id]: { slide: sl, max, total, seen: arr, last: new Date() } };
+  try { await F.updateDoc(uref(), { ["viewed." + id]: { slide: sl, max, total, seen: arr, last: F.serverTimestamp() } }); } catch (e) { console.warn(e); }
 }
 
 /* ---------- ADMIN ---------- */
@@ -123,18 +139,27 @@ function aStats() {
   const wk = Date.now() - 7 * 864e5, n = users.length;
   const act = users.filter(u => u.lastLogin && u.lastLogin.toDate && u.lastLogin.toDate().getTime() > wk).length;
   const seen = users.filter(u => Object.keys(u.viewed || {}).length).length, got = users.filter(u => (u.unlocked || []).length).length;
-  $("#ab").innerHTML = `<div class="stat"><div class="box"><small>Kirgen (dizimnen ótken) oqıwshılar</small><b>${n}</b></div><div class="box"><small>Sońǵı 7 kúnde aktiv</small><b>${act}</b></div><div class="box"><small>Sabaqlıq ashıp berilgen</small><b>${got}</b></div><div class="box"><small>Sabaqlıq kórgen oqıwshılar</small><b>${seen}</b></div></div>
-  <div class="tw"><table><tr><th>Tema</th><th>Ashılǵan</th><th>Kórgen</th><th>Aqırına jetken</th></tr>${topics.map(t => `<tr><td><b>${esc(t.title)}</b></td><td>${users.filter(u => (u.unlocked || []).includes(t.id)).length}</td><td>${users.filter(u => (u.viewed || {})[t.id]).length}</td><td>${users.filter(u => { const v = (u.viewed || {})[t.id]; return v && t.count && v.max >= t.count - 1; }).length}</td></tr>`).join("")}</table></div>`;
+  $("#ab").innerHTML = `<div class="stat"><div class="box"><small>Kirgen (dizimnen ótken) oqıwshılar</small><b>${n}</b></div><div class="box"><small>Sońǵı 7 kúnde aktiv</small><b>${act}</b></div><div class="box"><small>Sabaqlıq ashıp berilgen</small><b>${got}</b></div><div class="box"><small>Sabaqlıq kórgen oqıwshılar</small><b>${seen}</b></div><div class="box"><small>Dostupı aktiv (30 kún)</small><b>${users.filter(u => hasAcc(u)).length}</b></div><div class="box"><small>Dostup tawsılǵan / berilmegen</small><b>${users.filter(u => !hasAcc(u)).length}</b></div></div>
+  <div class="tw"><table><tr><th>Tema</th><th>Ashılǵan</th><th>Kórgen</th><th>Aqırına jetken</th></tr>${topics.map(t => `<tr><td><b>${esc(t.title)}</b></td><td>${users.filter(u => (u.unlocked || []).includes(t.id)).length}</td><td>${users.filter(u => seenOf(u, t.id).length).length}</td><td>${users.filter(u => { const v = (u.viewed || {})[t.id]; return isDone(u, t); }).length}</td></tr>`).join("")}</table></div>`;
 }
 function aUsers() {
-  const row = u => { const un = u.unlocked || []; return `<tr><td><b>${esc(u.name)}</b><br><small>${esc(u.email)}</small></td><td>${fmt(u.lastLogin)}</td><td>${topics.map((t, i) => `<button class="chip ${un.includes(t.id) ? "on" : ""}" data-u="${u.id}" data-t="${t.id}" title="${esc(t.title)}">${i + 1}</button>`).join("")}</td><td><button class="mini" data-nx="${u.id}">Keyingisin ashıw</button> <button class="mini" data-all="${u.id}">Barlıq</button> <button class="mini" data-no="${u.id}">Jabıw</button></td><td>${Object.keys(u.viewed || {}).length}/${topics.length}</td></tr>`; };
-  $("#ab").innerHTML = `<p class="sub">Sabaqlıqtı ashıw ushın nomerin bas (altın reń = ashıq). "Keyingisin ashıw" — tártibi boyınsha keyingi temanı ashadı.</p><div class="tw"><table><tr><th>Oqıwshı</th><th>Sońǵı kiriw</th><th>Ashıq temalar</th><th>Háreket</th><th>Kórgen</th></tr>${users.map(row).join("") || "<tr><td colspan=5>Elege oqıwshı joq.</td></tr>"}</table></div>`;
+  const accCell = u => { const e = accEnd(u); if (!e) return '<span class="dn">berilmegen</span>'; const dl = Math.ceil((e - Date.now()) / DAY); return e.getTime() > Date.now() ? `<span class="up">${d2s(e)}</span><br><small>${dl} kún qaldı</small>` : `<span class="dn">tawsılǵan<br>${d2s(e)}</span>`; };
+  const row = u => { const un = u.unlocked || []; return `<tr><td><b>${esc(u.name)}</b><br><small>${esc(u.email)}</small></td><td>${fmt(u.lastLogin)}</td><td>${accCell(u)}</td><td>${topics.map((t, i) => `<button class="chip ${un.includes(t.id) ? "on" : ""}" data-u="${u.id}" data-t="${t.id}" title="${esc(t.title)}">${i + 1}</button>`).join("")}</td><td><button class="mini gold" data-g="${u.id}">Dostup 30 kún</button> <button class="mini" data-x="${u.id}">+30 kún</button> <button class="mini" data-xn="${u.id}">+ basqa kún</button> <button class="mini" data-st="${u.id}">Toqtatıw</button><br><button class="mini" data-nx="${u.id}">Keyingisin ashıw</button> <button class="mini" data-all="${u.id}">Barlıq tema</button> <button class="mini" data-no="${u.id}">Temalardı jabıw</button></td><td>${topics.filter(t => isDone(u, t)).length}/${topics.length} tamam</td></tr>`; };
+  $("#ab").innerHTML = `<p class="sub"><b>Dostup 30 kún</b> — oqıwshıǵa 30 kún dostup beredi hám barlıq temanı ashadı (oqıwshı olardı izbe-izlikte kóredi). <b>+30 kún</b> — dostupti uzaytadı. Altın nomer = ashıq tema.</p><div class="tw"><table><tr><th>Oqıwshı</th><th>Sońǵı kiriw</th><th>Dostup</th><th>Ashıq temalar</th><th>Háreket</th><th>Kórgen</th></tr>${users.map(row).join("") || "<tr><td colspan=6>Elege oqıwshı joq.</td></tr>"}</table></div>`;
   const save = async (id, arr) => { const u = users.find(x => x.id == id); await F.updateDoc(F.doc(db, "users", id), { unlocked: arr }); u.unlocked = arr; aUsers(); };
-  const ord = id => topics.map(t => t.id).filter(x => id.includes(x));
+  const grant = async (id, days, all) => {
+    const u = users.find(x => x.id == id), cur = accEnd(u), base = cur && cur.getTime() > Date.now() ? cur : new Date(), end = new Date(base.getTime() + days * DAY);
+    const upd = { accessUntil: F.Timestamp.fromDate(end) }; if (all) upd.unlocked = topics.map(t => t.id);
+    await F.updateDoc(F.doc(db, "users", id), upd); u.accessUntil = upd.accessUntil; if (all) u.unlocked = upd.unlocked; aUsers();
+  };
   root.querySelectorAll("[data-u]").forEach(b => b.onclick = () => { const u = users.find(x => x.id == b.dataset.u), s = new Set(u.unlocked || []); s.has(b.dataset.t) ? s.delete(b.dataset.t) : s.add(b.dataset.t); save(u.id, [...s]); });
   root.querySelectorAll("[data-nx]").forEach(b => b.onclick = () => { const u = users.find(x => x.id == b.dataset.nx), n = topics.find(t => !(u.unlocked || []).includes(t.id)); if (n) save(u.id, [...(u.unlocked || []), n.id]); else alert("Barlıq temalar ashılǵan."); });
   root.querySelectorAll("[data-all]").forEach(b => b.onclick = () => save(b.dataset.all, topics.map(t => t.id)));
   root.querySelectorAll("[data-no]").forEach(b => b.onclick = () => save(b.dataset.no, []));
+  root.querySelectorAll("[data-g]").forEach(b => b.onclick = () => grant(b.dataset.g, 30, true));
+  root.querySelectorAll("[data-x]").forEach(b => b.onclick = () => grant(b.dataset.x, 30, false));
+  root.querySelectorAll("[data-xn]").forEach(b => b.onclick = () => { const n = parseInt(prompt("Neshe kún qosamız?", "7")); if (n > 0) grant(b.dataset.xn, n, false); });
+  root.querySelectorAll("[data-st]").forEach(b => b.onclick = async () => { if (!confirm("Dostup toqtatılsın ba?")) return; const u = users.find(x => x.id == b.dataset.st); u.accessUntil = F.Timestamp.fromDate(new Date(Date.now() - 1000)); await F.updateDoc(F.doc(db, "users", u.id), { accessUntil: u.accessUntil }); aUsers(); });
 }
 
 /* ---------- Mazmunnı ózgertiw ---------- */

@@ -47,3 +47,9 @@ Jańa `content.json` dı GitHub ke júkleseńiz, Admin → Sazlaw → **Jetispeg
 ## Jańa nusqa (v6) júklegennen soń
 1. Admin → Sazlaw → **Jetispegen temalardı qosıw** (Taymfreymler hám Sawda túrleri temaları qosıladı).
 2. Admin → Sazlaw → **Patch qollanıw** (túzetilgen slaydlar: Yapon shamı, Modeller suwretleri, Punkt/Pips). Basqa ózgertiwleriń saqlanadı.
+
+## Dostup (30 kún) hám izbe-izlik (v7)
+- Oqıwshı dizimnen ótkennen soń Admin → Oqıwshılar de **Dostup 30 kún** túymesin basıń: 30 kún dostup beredi hám barlıq temanı ashadı.
+- Temalar izbe-izlikte ashıladı: aldıńǵı temanıń barlıq slaydın kórgennen soń keyingisi ashıladı.
+- **+30 kún** — dostupti uzaytıw. Múddet tawsılsa, oqıwshı sabaqlıqtı kóre almaydı (Firestore rules da tekseriledi).
+- **Firebase → Firestore → Rules** ke jańa `firestore.rules` tekstin qoyıp Publish basıw SHÁRT.

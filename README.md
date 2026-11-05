@@ -53,3 +53,6 @@ Jańa `content.json` dı GitHub ke júkleseńiz, Admin → Sazlaw → **Jetispeg
 - Temalar izbe-izlikte ashıladı: aldıńǵı temanıń barlıq slaydın kórgennen soń keyingisi ashıladı.
 - **+30 kún** — dostupti uzaytıw. Múddet tawsılsa, oqıwshı sabaqlıqtı kóre almaydı (Firestore rules da tekseriledi).
 - **Firebase → Firestore → Rules** ke jańa `firestore.rules` tekstin qoyıp Publish basıw SHÁRT.
+
+## Temalar tártibin ózgertiw (v8)
+Admin → **Temalar tártibi**: kerekli nomerdi jazıp OK basıń (mısalı 9-temanı 2 ge) yamasa ↑ ↓. Tártip oqıwshılar ushın izbe-izlik bolıp esaplanadı. Firestore Rules ti qayta Publish etiwdiń keregi joq.

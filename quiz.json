@@ -1,0 +1,1232 @@
+{
+"t1": [
+{
+"q": "Treyd (trading) degen ne?",
+"o": [
+"Kredit alıw",
+"Kompaniya ashıw",
+"Bankte aqsha saqlaw",
+"Aktivlerdi baha ózgeriwinen paydalanıp satıp alıw hám satıw"
+],
+"a": 3
+},
+{
+"q": "Baha ósedi dep oylasań qanday sawda ashasań?",
+"o": [
+"SELL",
+"Stop Loss",
+"BUY",
+"Hesh qanday"
+],
+"a": 2
+},
+{
+"q": "Baha túsedi dep oylasań qanday sawda ashasań?",
+"o": [
+"Take Profit",
+"BUY",
+"SELL",
+"Lot"
+],
+"a": 2
+}
+],
+"t2": [
+{
+"q": "Birja degen ne?",
+"o": [
+"Satıwshı hám alıwshılar ushırasatuǵın bazar",
+"Salıq organı",
+"Bank bólimi",
+"Telefon qosımshası"
+],
+"a": 0
+},
+{
+"q": "Forex bazarında ne sawda etiledi?",
+"o": [
+"Obligatsiyalar",
+"Valyutalar",
+"Aksiyalar",
+"Úy hám jerler"
+],
+"a": 1
+},
+{
+"q": "Forex bazarı háptesine neshe kún isleydi?",
+"o": [
+"7 kún",
+"Tek dem alıs kúnleri",
+"3 kún",
+"5 kún"
+],
+"a": 3
+},
+{
+"q": "Kripto bazarı qashan isleydi?",
+"o": [
+"Ayına bir ret",
+"24 saat, háptesine 7 kún",
+"Tek kúndiz",
+"Tek jumıs kúnleri"
+],
+"a": 1
+},
+{
+"q": "Obligatsiya degen ne?",
+"o": [
+"Altın túri",
+"Qarız qaǵazı — belgili múddette procent penen qaytarıladı",
+"Kompaniya úlesi",
+"Kriptovalyuta"
+],
+"a": 1
+}
+],
+"t3": [
+{
+"q": "Broker kim?",
+"o": [
+"Treyder menen birjanıń ortasındaǵı orta adam (kompaniya)",
+"Programmist",
+"Bazardaǵı satıwshı",
+"Oraylıq bank"
+],
+"a": 0
+},
+{
+"q": "Broker treyderge ne beredi?",
+"o": [
+"Bepul aqsha",
+"Tek keńes",
+"Kepillengen payda",
+"Sawda platforması hám birjaǵa shıǵıw"
+],
+"a": 3
+},
+{
+"q": "Broker qalay dáramat tabadı?",
+"o": [
+"Mámleketten aylıq aladı",
+"Reklamadan",
+"Treyderdiń zıyanınan ǵana",
+"Spred, komissiya hám swap arqalı"
+],
+"a": 3
+},
+{
+"q": "Spred degen ne?",
+"o": [
+"Stop Loss túri",
+"Satıp alıw hám satıw bahası arasındaǵı parq",
+"Lot kólemi",
+"Sawdanı túnge qaldırǵanı ushın tólem"
+],
+"a": 1
+}
+],
+"t12": [
+{
+"q": "MetaTrader 5 qanday platforma?",
+"o": [
+"Broker arqalı isleytuǵın sawda terminalı",
+"Jańalıq saytı",
+"Kriptovalyuta birjası",
+"Bank qosımshası"
+],
+"a": 0
+},
+{
+"q": "TradingView tiykarınan ne ushın qolaylı?",
+"o": [
+"Grafik hám texnikalıq analiz ushın",
+"Tek kripto saqlaw ushın",
+"Salıq tólew ushın",
+"Aqsha ótkeriw ushın"
+],
+"a": 0
+},
+{
+"q": "Binance ne?",
+"o": [
+"Indikator",
+"Kriptovalyuta birjası",
+"Forex brokeri",
+"Oraylıq bank"
+],
+"a": 1
+}
+],
+"t15": [
+{
+"q": "EUR/USD juplıǵında bazalıq valyuta qaysı?",
+"o": [
+"Hesh qaysısı",
+"USD",
+"Ekewi de",
+"EUR"
+],
+"a": 3
+},
+{
+"q": "EUR/USD = 1.0800 neni bildiredi?",
+"o": [
+"1 dollar = 1.08 evro",
+"1 evro = 1.08 dollar",
+"1 evro = 108 dollar",
+"Spred 1.08"
+],
+"a": 1
+},
+{
+"q": "1 standart lot neshe birlik?",
+"o": [
+"1 000 000",
+"1 000",
+"10 000",
+"100 000"
+],
+"a": 3
+},
+{
+"q": "0.01 lot qalay ataladı?",
+"o": [
+"Mikro",
+"Makro",
+"Mini",
+"Standart"
+],
+"a": 0
+},
+{
+"q": "EUR/USD ta 1 lotta 1 punkt neshe dollar turadı?",
+"o": [
+"0.10 $",
+"1 $",
+"10 $",
+"100 $"
+],
+"a": 2
+}
+],
+"t16": [
+{
+"q": "Skalping degen ne?",
+"o": [
+"Tek altın sawdası",
+"Sawda ashpaw",
+"Bir neshe aylıq sawda",
+"Bir neshe minutlıq júdá qısqa sawdalar"
+],
+"a": 3
+},
+{
+"q": "Kúndelik (intraday) sawda qashan jabıladı?",
+"o": [
+"Bir hápte ishinde",
+"Sol kúnniń ishinde",
+"Jabılmaydı",
+"Bir aydan keyin"
+],
+"a": 1
+},
+{
+"q": "Swing sawda neshe waqıt dawam etedi?",
+"o": [
+"Minutlar",
+"Bir neshe kúnnen háptelerge shekem",
+"Jıllar",
+"Sekundlar"
+],
+"a": 1
+},
+{
+"q": "Pozicion sawda ushın qaysı taymfreym qolaylı?",
+"o": [
+"M15",
+"D1–W1",
+"M1–M5",
+"H1"
+],
+"a": 1
+},
+{
+"q": "Jumıs yamasa oqıw sebepli grafik aldında kóp otıra almasańız, qaysı stil qolaylı?",
+"o": [
+"Hámme stil birdey",
+"Swing",
+"Hesh qaysısı",
+"Skalping"
+],
+"a": 1
+}
+],
+"t10": [
+{
+"q": "Taymfreym degen ne?",
+"o": [
+"Spred túri",
+"Bir shamnıń qansha waqıttı kórsetiwi",
+"Sawda sanı",
+"Lot kólemi"
+],
+"a": 1
+},
+{
+"q": "H1 grafigindegi bir sham neshe waqıt?",
+"o": [
+"1 minut",
+"15 minut",
+"1 kún",
+"1 saat"
+],
+"a": 3
+},
+{
+"q": "Qaysı taymfreymde «shawqım» (jalǵan signal) kóbirek?",
+"o": [
+"W1",
+"MN",
+"Kishi taymfreymlerde (M1, M5)",
+"D1"
+],
+"a": 2
+},
+{
+"q": "Top-down analizde trendti qay jerden kóremiz?",
+"o": [
+"Tek bir taymfreym jetkilikli",
+"M1",
+"M5",
+"D1 / H4"
+],
+"a": 3
+},
+{
+"q": "Úlken taymfreymde túsiw trendi, kishisinde ósiw kórinse ne isleymiz?",
+"o": [
+"Lottı úlkeytemiz",
+"Eki tárepke de ashamız",
+"Úlken taymfreym baǵıtın tiykar etemiz",
+"Kishisi boyınsha BUY ashamız"
+],
+"a": 2
+}
+],
+"t17": [
+{
+"q": "Forex bazarındaǵı 3 tiykarǵı sessiya qaysılar?",
+"o": [
+"Tokio, Pekin, Seul",
+"Aziya, London, Nyu-York",
+"Parij, Berlin, Rim",
+"Moskva, Tashkent, Almatı"
+],
+"a": 1
+},
+{
+"q": "London sessiyası Nókis waqtı menen (qısta) qashan ashıladı?",
+"o": [
+"05:00",
+"23:00",
+"18:00",
+"13:00"
+],
+"a": 3
+},
+{
+"q": "Bazardıń eń belsendi waqtı qashan?",
+"o": [
+"Túngi 03:00 den keyin",
+"Aziya sessiyası basında",
+"Dem alıs kúnleri",
+"London hám Nyu-York birge islegende"
+],
+"a": 3
+},
+{
+"q": "Aziya sessiyasında qaysı juplıqlar belsendi?",
+"o": [
+"Hesh qaysısı",
+"JPY, AUD, NZD juplıqları",
+"Tek altın",
+"Tek GBP juplıqları"
+],
+"a": 1
+},
+{
+"q": "Sessiya ashılǵanda usınılatuǵın ádet qaysı?",
+"o": [
+"Sessiyanı ótkerip jiberiw",
+"Birinshi 15–30 minut asıqpay kútiw",
+"Eń úlken lot penen kiriw",
+"Birinshi sekundta kiriw"
+],
+"a": 1
+}
+],
+"t11": [
+{
+"q": "Market buyrıq qalay ashıladı?",
+"o": [
+"Tek ertesi kúni",
+"Házirgi bahada dárhal",
+"Hesh qashan",
+"Belgilengen dárejege jetkende"
+],
+"a": 1
+},
+{
+"q": "Buy Limit qay jerge qoyıladı?",
+"o": [
+"Qálegen jerge",
+"Házirgi bahadan tómen",
+"Házirgi bahaǵa",
+"Házirgi bahadan joqarı"
+],
+"a": 1
+},
+{
+"q": "Sell Stop qay jerge qoyıladı?",
+"o": [
+"Házirgi bahadan joqarı",
+"Take Profit ke",
+"Házirgi bahadan tómen",
+"Kiriw bahasına"
+],
+"a": 2
+},
+{
+"q": "Stop Loss ne ushın kerek?",
+"o": [
+"Lottı úlkeytiw ushın",
+"Paydanı avtomat jabıw ushın",
+"Zıyandı shegaralaw ushın",
+"Spredti azaytıw ushın"
+],
+"a": 2
+},
+{
+"q": "Break-even degen ne?",
+"o": [
+"SL ti kiriw bahasına kóshiriw",
+"Jańa schet ashıw",
+"Sawdanı ekilew",
+"TP ti alıp taslaw"
+],
+"a": 0
+}
+],
+"t18": [
+{
+"q": "Agressiv Stop Loss qay jerge qoyıladı?",
+"o": [
+"Qoyılmaydı",
+"Kiriw shamınıń sál astına — eń jaqın",
+"Zonanıń arǵı jaǵına — eń alıs",
+"Qálegen jerge"
+],
+"a": 1
+},
+{
+"q": "Konservativ Stop Loss tıń artıqmashılıǵı?",
+"o": [
+"Payda eki ese",
+"Eń isenimli, tiyiw itimallıǵı az",
+"Lot úlken boladı",
+"Spred joq"
+],
+"a": 1
+},
+{
+"q": "Orta Stop Loss qay jerge qoyıladı?",
+"o": [
+"TP qasına",
+"Kiriw bahasına",
+"Aqırǵı túptiń sál astına",
+"Grafiktiń tóbesine"
+],
+"a": 2
+},
+{
+"q": "Qáwip 10 $ bolsa, SL 30 punkt bolǵanda lot qansha (EUR/USD)?",
+"o": [
+"1.00",
+"0.10",
+"0.30",
+"0.03"
+],
+"a": 3
+},
+{
+"q": "Jańa baslawshılarǵa qaysı Stop Loss usınıladı?",
+"o": [
+"Hár ret hár túrli",
+"Orta yamasa konservativ",
+"Agressiv",
+"Stop Loss siz"
+],
+"a": 1
+}
+],
+"t19": [
+{
+"q": "Take Profit ti kóbinese qay jerge qoyamız?",
+"o": [
+"Kiriw bahasına",
+"Keyingi zonaǵa shekem",
+"Qálegen jerge",
+"Stop Loss tıń qasına"
+],
+"a": 1
+},
+{
+"q": "Bólip jabıwda TP1 de ne isleymiz?",
+"o": [
+"Poziciyanıń yarımın jabamız",
+"SL ti óshiremiz",
+"Hámmesin jabamız",
+"Lottı ekileymiz"
+],
+"a": 0
+},
+{
+"q": "Breakeven nátiyjesinde ne boladı?",
+"o": [
+"Spred joǵaladı",
+"Sawda endi zıyan menen jabılmaydı",
+"Payda eki ese boladı",
+"Sawda dárhal jabıladı"
+],
+"a": 1
+},
+{
+"q": "Trailing stop qalay isleydi?",
+"o": [
+"TP avtomat úlkeyedi",
+"Sawda hesh jabılmaydı",
+"Lot avtomat úlkeyedi",
+"SL baha izinen júrip, kóterilip baradı"
+],
+"a": 3
+},
+{
+"q": "Payda/qáwip qatnası keminde neshe bolıwı usınıladı?",
+"o": [
+"Áhmiyeti joq",
+"1:1",
+"1:2",
+"1:0.5"
+],
+"a": 2
+}
+],
+"t8": [
+{
+"q": "Texnikalıq analiz neni úyrenedi?",
+"o": [
+"Siyasiy jańalıqlardı",
+"Kompaniya esabatların",
+"Grafikti, shamlardı, zonalardı hám indikatorlardı",
+"Mámlekettiń ekonomikasın"
+],
+"a": 2
+},
+{
+"q": "Support (qollap-quwatlaw) degen ne?",
+"o": [
+"Lot túri",
+"Indikator",
+"Baha tómenge túsip, qaytıp ketetuǵın dáreje",
+"Baha joqarıda toqtaytuǵın dáreje"
+],
+"a": 2
+},
+{
+"q": "Resistance buzılsa, keyin ol ne bolıwı múmkin?",
+"o": [
+"Joǵaladı",
+"Jańa support",
+"Indikator",
+"Stop Loss"
+],
+"a": 1
+},
+{
+"q": "RSI 70 ten joqarı bolsa ne bildiredi?",
+"o": [
+"Trend joq",
+"Spred úlken",
+"Artıq satılǵan",
+"Artıq satıp alınǵan"
+],
+"a": 3
+},
+{
+"q": "Texnikalıq analizdiń qádemleri izbe-izliginde birinshisi qaysı?",
+"o": [
+"Lot esaplaw",
+"Úlken taymfreymde trendti anıqlaw",
+"Jurnalǵa jazıw",
+"Sawda ashıw"
+],
+"a": 1
+}
+],
+"t4": [
+{
+"q": "Yapon shamı qanday 4 bahanı kórsetedi?",
+"o": [
+"Open, Close, High, Low",
+"Buy, Sell, SL, TP",
+"Lot, punkt, pips, spred",
+"D1, H4, H1, M15"
+],
+"a": 0
+},
+{
+"q": "Ósiwshi (jasıl) shamda qaysısı joqarı?",
+"o": [
+"Close",
+"Open",
+"Ekewi teń",
+"Low"
+],
+"a": 0
+},
+{
+"q": "Doji shamı neni bildiredi?",
+"o": [
+"Sheshimsizlik — Open hám Close derlik teń",
+"Sawda joq",
+"Kúshli ósiw",
+"Kúshli túsiw"
+],
+"a": 0
+},
+{
+"q": "Hammer (bolǵa) shamı kóbinese qay jerde payda boladı?",
+"o": [
+"Qálegen jerde",
+"Ósiw trendiniń ortasında",
+"Tek dem alıs kúnleri",
+"Túsiw trendiniń sońında"
+],
+"a": 3
+},
+{
+"q": "Buqa engulfing (jútip jiberiw) qanday signal?",
+"o": [
+"Stop Loss belgisi",
+"Sell belgisi",
+"Signal emes",
+"Buy belgisi"
+],
+"a": 3
+}
+],
+"t6": [
+{
+"q": "Trend liniyasın sızıw ushın keminde neshe noqat kerek?",
+"o": [
+"5",
+"1",
+"10",
+"2"
+],
+"a": 3
+},
+{
+"q": "Kanal degen ne?",
+"o": [
+"Lot túri",
+"Indikator",
+"Trend liniyasına parallel ekinshi liniya menen payda bolǵan aralıq",
+"Broker atı"
+],
+"a": 2
+},
+{
+"q": "Liniya buzılıp, baha qaytıp onı tekserse, bul ne dep ataladı?",
+"o": [
+"Doji",
+"Retest",
+"Swap",
+"Spred"
+],
+"a": 1
+}
+],
+"t5": [
+{
+"q": "«Eki tóbe» modeli qaysı baǵıtqa signal beredi?",
+"o": [
+"Tómenge (Sell)",
+"Signal bermeydi",
+"Eki tárepke",
+"Joqarıǵa (Buy)"
+],
+"a": 0
+},
+{
+"q": "«Bas hám ıyıqlar» modelinde qaysı dáreje buzılǵanda kiremiz?",
+"o": [
+"Ońǵı ıyıq",
+"Moyın sızıǵı",
+"Bastıń tóbesi",
+"Hesh qaysısı"
+],
+"a": 1
+},
+{
+"q": "Úshmúyeshlik modelinde kiriw qashan?",
+"o": [
+"Shegarası buzılǵanda",
+"Hesh qashan",
+"Úshmúyeshlik ishinde",
+"Modelden aldın"
+],
+"a": 0
+},
+{
+"q": "Buqa bayraǵı neni bildiredi?",
+"o": [
+"Ósiwdiń toqtawı",
+"Ósiw trendiniń dawamı",
+"Túsiw basları",
+"Bazar jabıldı"
+],
+"a": 1
+},
+{
+"q": "Modeller boyınsha maqset (TP) qalay belgilenedi?",
+"o": [
+"Belgilenbeydi",
+"Qálegenshe",
+"Hár ret 10 punkt",
+"Modeldiń biyikligi buzılǵan noqattan ólshenedi"
+],
+"a": 3
+}
+],
+"t20": [
+{
+"q": "Nege dáreje emes, zona dep ataymız?",
+"o": [
+"Baha anıq bir noqatqa emes, aralıqqa tiyedi",
+"Sebebi joq",
+"Broker solay talap etedi",
+"Shıraylı kóriniw ushın"
+],
+"a": 0
+},
+{
+"q": "Zona qashan kúshli esaplanadı?",
+"o": [
+"Kishi taymfreymde",
+"Hesh tiymese",
+"Baha oǵan kóp ret tiyip qaytqanda",
+"Bir ret tiygende"
+],
+"a": 2
+},
+{
+"q": "Zonalardı qaysı taymfreymnen baslap belgilew usınıladı?",
+"o": [
+"M5",
+"Áhmiyeti joq",
+"D1, H4",
+"M1"
+],
+"a": 2
+},
+{
+"q": "Baha zonaǵa kelgende dárhal kiremiz be?",
+"o": [
+"Joq, tastıyıqlaw shamın kútemiz",
+"Tek túnde",
+"Awa, dárhal",
+"Hesh qashan kirmeymiz"
+],
+"a": 0
+},
+{
+"q": "Stop Loss zonaǵa salıstırǵanda qay jerge qoyıladı?",
+"o": [
+"Kiriw bahasına",
+"Qoyılmaydı",
+"Zonanıń arǵı jaǵına",
+"Zonanıń ishine"
+],
+"a": 2
+}
+],
+"t21": [
+{
+"q": "BPC zona nedan payda boladı?",
+"o": [
+"Spredten",
+"Diapazon ishindegi háreketten",
+"Jańalıqtıń joqlıǵınan",
+"Kúshli, qaytıwsız bir tárepleme impulstan"
+],
+"a": 3
+},
+{
+"q": "BPC zona qay jerden qay jerge sızıladı?",
+"o": [
+"Tek tóbeden",
+"Impuls baslanǵan túpten (0%) tóbesine (100%) shekem",
+"Qálegen eki sham arasına",
+"Grafiktiń basınan aqırına"
+],
+"a": 1
+},
+{
+"q": "Túp 1.1000, tóbe 1.1100 bolsa, 50% dárejesi qansha?",
+"o": [
+"1.1000",
+"1.1025",
+"1.1050",
+"1.1100"
+],
+"a": 2
+},
+{
+"q": "BUY sawdasında Stop Loss qay jerge qoyıladı?",
+"o": [
+"Zonanıń túbinen (0%) sál tómen",
+"Tóbege",
+"Qoyılmaydı",
+"50% dárejesine"
+],
+"a": 0
+},
+{
+"q": "Kúshli BPC zonanıń belgisi qaysı?",
+"o": [
+"Aralas reńli shamlar",
+"Uzın sayalı kishi shamlar",
+"Qatarınan 5 hám onnan kóp bir reńli, úlken deneli sham",
+"Bir neshe ret tiyilgen zona"
+],
+"a": 2
+}
+],
+"t22": [
+{
+"q": "Kóteriliwshi trendte Fibonachchi qalay sızıladı?",
+"o": [
+"Túpten tóbege",
+"Gorizontal",
+"Sızılmaydı",
+"Tóbeden túpke"
+],
+"a": 0
+},
+{
+"q": "«Altın zona» qaysı dárejeler arasında?",
+"o": [
+"100% – 161.8%",
+"78.6% – 100%",
+"0% – 23.6%",
+"50% – 61.8%"
+],
+"a": 3
+},
+{
+"q": "Fibonachchiniń tiykarǵı dárejeleri qaysılar?",
+"o": [
+"25%, 75%, 125%",
+"38.2%, 50%, 61.8%",
+"1%, 2%, 3%",
+"10%, 20%, 30%"
+],
+"a": 1
+},
+{
+"q": "Fibonachchini qaysı háreketke sızamız?",
+"o": [
+"Diapazonǵa",
+"Jańalıq shamına",
+"Kúshli, anıq impulsqa",
+"Qálegen kishi háreketke"
+],
+"a": 2
+},
+{
+"q": "Fibonachchi dárejesine jetkende ne kútemiz?",
+"o": [
+"Jańalıqtı",
+"Dem alıs kúnin",
+"Hesh nárse — dárhal kiremiz",
+"Tastıyıqlaw shamın yamasa zona menen sáykeslikti"
+],
+"a": 3
+}
+],
+"t9": [
+{
+"q": "Fundamental analiz neni úyrenedi?",
+"o": [
+"Ekonomikanı hám jańalıqlardı",
+"Lot esabın",
+"Tek indikatorlardı",
+"Tek shamlardı"
+],
+"a": 0
+},
+{
+"q": "Oraylıq bank procent stavkasın kóterse, valyuta kóbinese ne boladı?",
+"o": [
+"Joǵaladı",
+"Ózgermeydi",
+"Arzanlaydı",
+"Qımbatlaydı"
+],
+"a": 3
+},
+{
+"q": "NFP jańalıǵı neni kórsetedi?",
+"o": [
+"Inflyaciyanı",
+"Kripto bahasın",
+"Altın bahasın",
+"AQSh taǵı jańa jumıs orınların"
+],
+"a": 3
+},
+{
+"q": "Ekonomikalıq kalendarda qaysı reńli jańalıq eń kúshli?",
+"o": [
+"Jasıl",
+"Qızǵılt sarı",
+"Sarı",
+"Qızıl"
+],
+"a": 3
+},
+{
+"q": "Kúshli jańalıqtan aldın hám keyin ne isleymiz?",
+"o": [
+"30 minut jańa sawda ashpaymız",
+"Stop Loss ti alıp taslaymız",
+"Eki tárepke de ashamız",
+"Eń úlken lot penen kiremiz"
+],
+"a": 0
+}
+],
+"t7": [
+{
+"q": "Bir sawdada depozittiń neshe procentinen artıq qáwipke barmaw kerek?",
+"o": [
+"1–2%",
+"50%",
+"25%",
+"10%"
+],
+"a": 0
+},
+{
+"q": "Depozit 1000 $, qáwip 1% bolsa, bir sawdada eń kóp qansha joǵaltıwǵa boladı?",
+"o": [
+"1 $",
+"1000 $",
+"10 $",
+"100 $"
+],
+"a": 2
+},
+{
+"q": "Depozit 50% ke tússe, qaytarıw ushın qansha payda kerek?",
+"o": [
+"+75%",
+"+25%",
+"+50%",
+"+100%"
+],
+"a": 3
+},
+{
+"q": "RR 1:2 degen ne?",
+"o": [
+"2 sawda ashıw",
+"20 $ qáwip penen 10 $ payda",
+"Lot 1.2",
+"10 $ qáwip penen 20 $ payda kútiw"
+],
+"a": 3
+},
+{
+"q": "Treyderdiń birinshi wazıypası ne?",
+"o": [
+"Tez payda tabıw",
+"Lottı úlkeytiw",
+"Depozitti saqlaw",
+"Kóp sawda ashıw"
+],
+"a": 2
+}
+],
+"t24": [
+{
+"q": "Qáwip summasınıń formulası qaysı?",
+"o": [
+"Qáwip $ = TP − SL",
+"Qáwip $ = Depozit ÷ Lot",
+"Qáwip $ = Lot × Spred",
+"Qáwip $ = Depozit × Qáwip %"
+],
+"a": 3
+},
+{
+"q": "Lot formulası qaysı (EUR/USD)?",
+"o": [
+"Lot = Qáwip % × 100",
+"Lot = SL × TP",
+"Lot = Depozit × 10",
+"Lot = Qáwip $ ÷ (SL punkt × 10 $)"
+],
+"a": 3
+},
+{
+"q": "Depozit 1000 $, qáwip 1%, SL 20 punkt (EUR/USD). Lot qansha?",
+"o": [
+"0.01",
+"0.10",
+"0.50",
+"0.05"
+],
+"a": 3
+},
+{
+"q": "RR = 2 bolsa, zıyanǵa túspew ushın neshe procent utıs jetkilikli?",
+"o": [
+"33%",
+"25%",
+"50%",
+"10%"
+],
+"a": 0
+},
+{
+"q": "Eń qáwipli usıl qaysı?",
+"o": [
+"Kúnlik limit",
+"1% qaǵıydası",
+"Breakeven",
+"Martingeyl — utılǵannan keyin lottı ekilew"
+],
+"a": 3
+}
+],
+"t25": [
+{
+"q": "Winrate (utıs procenti) degen ne?",
+"o": [
+"Lot kólemi",
+"100 sawdadan neshewi utıs",
+"Bir sawdanıń paydası",
+"Spred"
+],
+"a": 1
+},
+{
+"q": "10 sawda, utıs 40%, RR 1:2, qáwip 10 $. Nátiyje qansha?",
+"o": [
+"−20 $",
+"0 $",
+"+20 $",
+"+80 $"
+],
+"a": 2
+},
+{
+"q": "RR 1:3 te zıyansızlıq ushın utıs procenti qansha?",
+"o": [
+"75%",
+"50%",
+"33%",
+"25%"
+],
+"a": 3
+},
+{
+"q": "Nátiyje neden ǵárezli?",
+"o": [
+"Tek utıs procentinen",
+"Utıs procenti hám RR ekewinen",
+"Brokerden",
+"Tek RR den"
+],
+"a": 1
+},
+{
+"q": "Utıs procenti tómen bolsa da payda tabıw ushın ne kerek?",
+"o": [
+"Joqarı RR",
+"Stop Loss siz sawda",
+"Kóp sawda",
+"Úlken lot"
+],
+"a": 0
+}
+],
+"t26": [
+{
+"q": "FOMO degen ne?",
+"o": [
+"Lot túri",
+"Úlgermey qalıw qorqınıshı",
+"Sawda jurnalı",
+"Indikator"
+],
+"a": 1
+},
+{
+"q": "Zıyannan keyin ashıwlanıp úlken lot penen kiriw qalay ataladı?",
+"o": [
+"Scalping",
+"Revenge trading (ósh alıw sawdası)",
+"Backtest",
+"Breakeven"
+],
+"a": 1
+},
+{
+"q": "Overtrading degen ne?",
+"o": [
+"Jurnal júrgiziw",
+"Bir sawda",
+"Artıqsha kóp sawda etiw",
+"Sawda etpew"
+],
+"a": 2
+},
+{
+"q": "Qatarınan 2–3 zıyannan keyin ne isleymiz?",
+"o": [
+"Stop Loss ti alıp taslaymız",
+"Dárhal jańa sawda ashamız",
+"Lottı ekileymiz",
+"Kompyuterdi jabıp, sol kúni toqtaymız"
+],
+"a": 3
+},
+{
+"q": "Sawda rejesi qashan dúziledi?",
+"o": [
+"Zıyannan keyin",
+"Sawdadan keyin",
+"Kerek emes",
+"Sawdadan aldın"
+],
+"a": 3
+}
+],
+"t27": [
+{
+"q": "Sawda jurnalı ne ushın kerek?",
+"o": [
+"Kerek emes",
+"Qátelerdi kóriw hám statistika ushın",
+"Brokerge esabat ushın",
+"Salıq ushın"
+],
+"a": 1
+},
+{
+"q": "Jurnalǵa ne jazıladı?",
+"o": [
+"Tek lot",
+"Tek zıyan",
+"Sáne, juplıq, kiriw, SL, TP, sebep, nátiyje hám emociya",
+"Tek payda"
+],
+"a": 2
+},
+{
+"q": "Backtest degen ne?",
+"o": [
+"Haqıyqıy schette sawda",
+"Jańalıq oqıw",
+"Strategiyanı tariyxıy grafikte tekseriw",
+"Brokerdi tańlaw"
+],
+"a": 2
+},
+{
+"q": "Isenimli nátiyje ushın keminde neshe sawda tekseriw kerek?",
+"o": [
+"5",
+"10",
+"1",
+"50–100"
+],
+"a": 3
+},
+{
+"q": "Strategiyanı tekseriwdiń durıs izbe-izligi qaysı?",
+"o": [
+"Real → Demo → Backtest",
+"Demo → Real, backtest kerek emes",
+"Backtest → Demo → Real",
+"Tek Real"
+],
+"a": 2
+}
+],
+"t28": [
+{
+"q": "Prop-firma degen ne?",
+"o": [
+"Treyderge óz kapitalın beretuǵın firma",
+"Bank",
+"Broker",
+"Kripto birja"
+],
+"a": 0
+},
+{
+"q": "Prop-firmada birinshi qádem ne?",
+"o": [
+"Sınaq (challenge) satıp alıw",
+"Óz aqshańızdı salıw",
+"Hesh nárse",
+"Licenziya alıw"
+],
+"a": 0
+},
+{
+"q": "Birinshi basqıshta maqset kóbinese qansha?",
+"o": [
+"~8–10%",
+"~1%",
+"~50%",
+"~100%"
+],
+"a": 0
+},
+{
+"q": "Firma scheti alǵannan keyin paydanıń qansha bólegi sizge tiyisli?",
+"o": [
+"50%",
+"10–20%",
+"100%",
+"80–90%"
+],
+"a": 3
+},
+{
+"q": "Prop-firma sınaǵınan ótpey qalıwdıń eń kóp sebebi qaysı?",
+"o": [
+"Kúnlik yamasa ulıwma zıyan limitin buzıw",
+"Kóp payda tabıw",
+"Jurnal júrgiziw",
+"Demo schet"
+],
+"a": 0
+}
+]
+}

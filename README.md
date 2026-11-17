@@ -62,3 +62,10 @@ Admin → **Temalar tártibi**: kerekli nomerdi jazıp OK basıń (mısalı 9-te
 2. Saytqa admin bolıp kiriń → ⚙ Admin → Sazlaw → **Kurstı jańalaw** túymesin basıń (jańa 17 tema qosıladı, tártip jańalanadı, dostupı bar oqıwshılarǵa jańa temalar ashıladı).
 3. Keyin **Patch qollanıw** túymesin basıń (eski 11 temadaǵı til dúzetiwleri).
 Ózgertken tekstleriń saqlanadı. Firestore Rules ti qayta Publish etiwdiń keregi joq.
+
+## v10: Testler, reyting hám sertifikat
+1. Barlıq fayllardı GitHub ke júkleń (quiz.json dı GitHub ke JÚKLEMEŃ — onda durıs juwaplar bar).
+2. Firebase → Firestore → Rules ke jańa `firestore.rules` tekstin qoyıp **Publish** basıń (SHÁRT).
+3. Admin → Sazlaw → **Testlerdi júklew** → kompyuterdegi quiz.json dı tańlap júkleń.
+4. Oqıwshı temanı tolıq kórgennen soń «Testti baslaw» shıǵadı; test bir ret tapsırıladı; keyingi tema test tapsırılǵannan soń ashıladı.
+5. Admin → **Reyting · Sertifikat**: ballar boyınsha dizim, sertifikat shárti (% ) ózgertiledi, kerek bolsa «Testlerin nollaw».

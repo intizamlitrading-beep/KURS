@@ -8,7 +8,7 @@ const auth = A.getAuth(fapp), db = F.getFirestore(fapp);
 const root = document.getElementById("app");
 const $ = (s, r = document) => r.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const fx = s => String(s || "").replace(/assets\/img\//g, "").replace(/src="([\w-]+\.jpg)"/g, 'src="$1?v=9"');
+const fx = s => String(s || "").replace(/assets\/img\//g, "").replace(/src="([\w-]+\.jpg)"/g, 'src="$1?v=10"');
 const fmt = t => t && t.toDate ? t.toDate().toLocaleString("ru-RU") : "—";
 const ADM = ADMIN_EMAILS.map(x => x.toLowerCase());
 const ERR = {
@@ -24,7 +24,7 @@ const uref = () => F.doc(db, "users", me.uid);
 
 /* ---------- Kiriw / dizimnen ótiw / parol tiklaw ---------- */
 function authView(mode = "in", note = "") {
-  root.innerHTML = `<div class="auth"><div style="text-align:center"><img src="logo.jpg?v=9" width="90" style="border-radius:50%"><h2>Intizamli Trading</h2><small style="color:var(--mut)">Intizam • Sabır • Natije</small></div>
+  root.innerHTML = `<div class="auth"><div style="text-align:center"><img src="logo.jpg?v=10" width="90" style="border-radius:50%"><h2>Intizamli Trading</h2><small style="color:var(--mut)">Intizam • Sabır • Natije</small></div>
   <div class="tabs" style="margin-top:16px"><button data-m="in" class="${mode == "in" ? "on" : ""}">Kiriw</button><button data-m="up" class="${mode == "up" ? "on" : ""}">Dizimnen ótiw</button></div>
   <form id="f">${mode == "up" ? `<label>Atıńız</label><input id="n" required>` : ""}
   <label>Email</label><input id="e" type="email" required autocomplete="email">
@@ -65,7 +65,7 @@ A.onAuthStateChanged(auth, async u => {
   root.innerHTML = '<p style="text-align:center;margin-top:80px">Júklenbekte…</p>';
   try { await loadProfile(); await loadTopics(); home(); } catch (e) { root.innerHTML = `<div class="auth"><p class="err">${esc(msg(e))}</p><button class="gold full" id="lo">Shıǵıw</button></div>`; $("#lo").onclick = () => A.signOut(auth); }
 });
-const head = (extra = "") => `<header><img src="logo.jpg?v=9" alt="logo" id="lg"><div><b>INTIZAMLI_TRADING</b><br><small style="color:var(--mut)">${esc(prof.name)} · ${esc(me.email)}</small></div><div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap">${extra}${isAdmin ? '<button id="adm">⚙ Admin</button>' : ""}<button id="out">Shıǵıw</button></div></header>`;
+const head = (extra = "") => `<header><img src="logo.jpg?v=10" alt="logo" id="lg"><div><b>INTIZAMLI_TRADING</b><br><small style="color:var(--mut)">${esc(prof.name)} · ${esc(me.email)}</small></div><div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap">${extra}${isAdmin ? '<button id="adm">⚙ Admin</button>' : ""}<button id="out">Shıǵıw</button></div></header>`;
 function bindHead() {
   $("#out").onclick = () => A.signOut(auth); const a = $("#adm"); if (a) a.onclick = () => admin("stats"); $("#lg").onclick = home;
 }
@@ -75,8 +75,10 @@ const DAY = 864e5, d2s = d => d.toLocaleDateString("ru-RU");
 const accEnd = p => p && p.accessUntil && p.accessUntil.toDate ? p.accessUntil.toDate() : null;
 const hasAcc = p => { const e = accEnd(p); return !!e && e.getTime() > Date.now(); };
 const seenOf = (p, id) => { const v = (p.viewed || {})[id]; if (!v) return []; if (Array.isArray(v.seen)) return v.seen; return v.max >= 0 ? Array.from({ length: v.max + 1 }, (_, i) => i) : []; };
+const qOf = (p, id) => ((p && p.quiz) || {})[id];
+const quizOk = (p, t) => !t || !t.quiz || !!qOf(p, t.id);
 const isDone = (p, t) => !!t && t.count > 0 && seenOf(p, t.id).length >= t.count;
-const topicState = (t, i) => { if (isAdmin) return "open"; if (!(prof.unlocked || []).includes(t.id)) return "admin"; if (!hasAcc(prof)) return "expired"; if (i > 0 && !isDone(prof, topics[i - 1])) return "seq"; return "open"; };
+const topicState = (t, i) => { if (isAdmin) return "open"; if (!(prof.unlocked || []).includes(t.id)) return "admin"; if (!hasAcc(prof)) return "expired"; if (i > 0 && !(isDone(prof, topics[i - 1]) && quizOk(prof, topics[i - 1]))) return "seq"; return "open"; };
 function accessBanner() {
   if (isAdmin) return "";
   const e = accEnd(prof);
@@ -85,12 +87,12 @@ function accessBanner() {
   return `<div class="note" style="border-color:var(--up)">Dostup: <b>${d2s(e)}</b> shekem (${Math.ceil((e - Date.now()) / DAY)} kún qaldı)</div>`;
 }
 function home() {
-  const TXT = { admin: "Admin ashqanda ashıladı", expired: "Dostup múddeti tawsıldı", seq: "Aldıńǵı temanı aqırına shekem kórseńiz ashıladı" };
-  root.innerHTML = head() + `<main><h1>Trading <span>kursı</span></h1><p class="sub">Sabaqlıqlar izbe-izlikte ashıladı: aldıńǵı temanı tolıq kórgennen soń keyingisi ashıladı.</p>${accessBanner()}<div class="grid">` +
+  const TXT = { admin: "Admin ashqanda ashıladı", expired: "Dostup múddeti tawsıldı", seq: "Aldıńǵı temanı hám onıń testin tamamlasańız ashıladı" };
+  root.innerHTML = head() + `<main><h1>Trading <span>kursı</span></h1><p class="sub">Sabaqlıqlar izbe-izlikte ashıladı: temanı tolıq kórip, testin tapsırǵannan soń keyingisi ashıladı. Test ballarıńız boyınsha sertifikat beriledi.</p>${accessBanner()}<div class="grid">` +
     topics.map((t, i) => {
       const st = topicState(t, i), open = st == "open", done = isDone(prof, t), seen = seenOf(prof, t.id).length;
       const pr = t.count ? Math.min(100, Math.round(seen / t.count * 100)) : 0;
-      return `<button class="tc ${open ? "" : "lock"}" ${open ? `data-t="${t.id}"` : "disabled"}><div class="n">${i + 1}-TEMA ${done ? "✓" : open ? "" : "🔒"}</div><h3>${esc(t.title)}</h3><p>${open ? esc(t.desc) : TXT[st]}</p>${!isAdmin && open && pr ? `<div class="bar" style="margin:10px 0 0"><i style="width:${pr}%"></i></div>` : ""}</button>`;
+      return `<button class="tc ${open ? "" : "lock"}" ${open ? `data-t="${t.id}"` : "disabled"}><div class="n">${i + 1}-TEMA ${done ? "✓" : open ? "" : "🔒"}${t.quiz && qOf(prof, t.id) ? ` · Test: ${qOf(prof, t.id).score}/${qOf(prof, t.id).total}` : ""}</div><h3>${esc(t.title)}</h3><p>${open ? esc(t.desc) : TXT[st]}</p>${!isAdmin && open && pr ? `<div class="bar" style="margin:10px 0 0"><i style="width:${pr}%"></i></div>` : ""}</button>`;
     }).join("") + (topics.length ? "" : "<p>Elege sabaqlıq joq.</p>") + `</div></main>`;
   bindHead(); root.querySelectorAll("[data-t]").forEach(b => b.onclick = () => openTopic(b.dataset.t));
 }
@@ -106,14 +108,40 @@ async function openTopic(id) {
     track(id, sl, slides.length); const seenSet = new Set(seenOf(prof, id)), allSeen = seenSet.size >= slides.length;
     root.innerHTML = head('<button id="hm">☰ Temalar</button>') + `<main><div class="n" style="color:var(--gold);font-weight:800">${esc(t.title)}${isAdmin ? "" : ` · kórilgen ${Math.min(seenSet.size, slides.length)}/${slides.length}`}</div><div class="bar"><i style="width:${(sl + 1) / Math.max(slides.length, 1) * 100}%"></i></div>
     <div class="slide"><div class="k">${esc(s.k)}</div><h2>${esc(s.h)}</h2>${s.b}</div>
-    <div class="nav"><button id="pv" ${sl ? "" : "disabled"}>← Artqa</button><div class="dots">${slides.map((_, i) => `<i class="${i == sl ? "on" : seenSet.has(i) ? "seen" : ""}" data-i="${i}"></i>`).join("")}</div><button class="gold" id="nx">${sl < slides.length - 1 ? "Aldıńǵı →" : allSeen || isAdmin ? "Tema tamam ✓ Temalarǵa" : "Temalarǵa"}</button></div>${sl == slides.length - 1 && !allSeen && !isAdmin ? '<div class="note">Keyingi tema ashılıwı ushın bul temanıń barlıq slaydın kóriw kerek (kórilmegen slaydlar kúnǵirt nokat).</div>' : ""}</main>`;
+    <div class="nav"><button id="pv" ${sl ? "" : "disabled"}>← Artqa</button><div class="dots">${slides.map((_, i) => `<i class="${i == sl ? "on" : seenSet.has(i) ? "seen" : ""}" data-i="${i}"></i>`).join("")}</div><button class="gold" id="nx">${sl < slides.length - 1 ? "Aldıńǵı →" : (t.quiz && (allSeen || isAdmin)) ? (qOf(prof, id) ? "Test nátiyjesi →" : "Testti baslaw →") : allSeen || isAdmin ? "Tema tamam ✓ Temalarǵa" : "Temalarǵa"}</button></div>${sl == slides.length - 1 && !allSeen && !isAdmin ? '<div class="note">Keyingi tema ashılıwı ushın bul temanıń barlıq slaydın kóriw kerek (kórilmegen slaydlar kúnǵirt nokat).</div>' : ""}</main>`;
     bindHead(); $("#hm").onclick = home; $("#pv").onclick = () => { sl--; show(); };
-    $("#nx").onclick = () => { sl < slides.length - 1 ? (sl++, show()) : home(); };
+    $("#nx").onclick = () => { sl < slides.length - 1 ? (sl++, show()) : (t.quiz && (seenOf(prof, id).length >= slides.length || isAdmin)) ? runQuiz(t) : home(); };
     root.querySelectorAll("[data-i]").forEach(d => d.onclick = () => { sl = +d.dataset.i; show(); });
     root.querySelectorAll("[data-go]").forEach(b => b.onclick = () => { sl = +b.dataset.go; show(); });
     scrollTo(0, 0);
   };
   show();
+}
+async function runQuiz(t) {
+  root.innerHTML = '<p style="text-align:center;margin-top:80px">Júklenbekte…</p>';
+  let qs = [];
+  try { const s = await F.getDoc(F.doc(db, "quiz", t.id)); qs = s.exists() ? s.data().items || [] : []; } catch (e) { alert(msg(e)); return home(); }
+  if (!qs.length) return home();
+  const done = qOf(prof, t.id), ans = done ? done.ans || [] : [];
+  const render = (res) => {
+    root.innerHTML = head('<button id="hm">☰ Temalar</button>') + `<main><div class="n" style="color:var(--gold);font-weight:800">${esc(t.title)} · TEST</div><h1 style="font-size:28px">Ózińizdi <span>tekseriń</span></h1>
+    ${res ? `<div class="box" style="border-color:var(--gold);text-align:center;margin:10px 0 18px"><b style="font-size:30px">${res.score} / ${res.total}</b><br><small>Nátiyje saqlandı. Durıs juwaplar jasıl, qáteleri qızıl.</small></div>` : `<p class="sub">${qs.length} soraw. Hár sorawǵa bir juwap tańlań. Test bir ret tapsırıladı — ballar sertifikat ushın esaplanadı.</p>`}
+    ${qs.map((q, i) => `<div class="slide" style="min-height:0;margin-bottom:14px;padding:18px"><b>${i + 1}. ${esc(q.q)}</b>${q.o.map((o, j) => {
+      let st = ""; if (res) { if (j == q.a) st = "border-color:var(--up);color:var(--up)"; else if (res.ans[i] == j) st = "border-color:var(--dn);color:var(--dn)"; }
+      return `<label class="opt" style="cursor:${res ? "default" : "pointer"};${st}"><input type="radio" name="q${i}" value="${j}" ${res ? "disabled" : ""} ${res && res.ans[i] == j ? "checked" : ""} style="width:auto;margin:0">${"ABCD"[j]}) ${esc(o)}</label>`; }).join("")}</div>`).join("")}
+    ${res ? '<button class="gold full" id="bk">Temalarǵa →</button>' : '<button class="gold full" id="sb">Testti tapsırıw</button><div id="qm" class="err"></div>'}</main>`;
+    bindHead(); $("#hm").onclick = home; scrollTo(0, 0);
+    if (res) { $("#bk").onclick = home; return; }
+    $("#sb").onclick = async () => {
+      const a = qs.map((_, i) => { const r = root.querySelector(`input[name=q${i}]:checked`); return r ? +r.value : -1; });
+      if (a.includes(-1)) { $("#qm").textContent = "Barlıq sorawlarǵa juwap beriń."; return; }
+      if (!confirm("Testti tapsıramız ba? Juwaplardı keyin ózgertiw múmkin emes.")) return;
+      const score = a.filter((x, i) => x == qs[i].a).length, r = { score, total: qs.length, ans: a, at: new Date() };
+      if (!isAdmin) { try { await F.updateDoc(uref(), { ["quiz." + t.id]: { score, total: qs.length, ans: a, at: F.serverTimestamp() } }); } catch (e) { $("#qm").textContent = msg(e); return; } prof.quiz = { ...(prof.quiz || {}), [t.id]: r }; }
+      render(r);
+    };
+  };
+  render(done ? { score: done.score, total: done.total, ans } : null);
 }
 async function track(id, sl, total) {
   if (isAdmin) return;
@@ -127,13 +155,25 @@ async function track(id, sl, total) {
 let users = [];
 async function admin(tab = "stats") {
   if (!isAdmin) return home();
-  root.innerHTML = head('<button id="hm">← Oqıwshı kórinisi</button>') + `<main><h1>Admin <span>paneli</span></h1><div class="tabs">${[["stats", "Statistika"], ["users", "Oqıwshılar"], ["edit", "Mazmunnı ózgertiw"], ["order", "Temalar tártibi"], ["set", "Sazlaw"]].map(x => `<button data-a="${x[0]}" class="${tab == x[0] ? "on" : ""}">${x[1]}</button>`).join("")}</div><div id="ab">Júklenbekte…</div></main>`;
+  root.innerHTML = head('<button id="hm">← Oqıwshı kórinisi</button>') + `<main><h1>Admin <span>paneli</span></h1><div class="tabs">${[["stats", "Statistika"], ["users", "Oqıwshılar"], ["edit", "Mazmunnı ózgertiw"], ["order", "Temalar tártibi"], ["rate", "Reyting · Sertifikat"], ["set", "Sazlaw"]].map(x => `<button data-a="${x[0]}" class="${tab == x[0] ? "on" : ""}">${x[1]}</button>`).join("")}</div><div id="ab">Júklenbekte…</div></main>`;
   bindHead(); $("#hm").onclick = home; root.querySelectorAll("[data-a]").forEach(b => b.onclick = () => admin(b.dataset.a));
   try {
     await loadTopics();
     if (!["edit", "set", "order"].includes(tab)) users = (await F.getDocs(F.collection(db, "users"))).docs.map(d => ({ id: d.id, ...d.data() })).filter(u => !ADM.includes((u.email || "").toLowerCase()));
-    ({ stats: aStats, users: aUsers, edit: aEdit, order: aOrder, set: aSet })[tab]();
+    ({ stats: aStats, users: aUsers, edit: aEdit, order: aOrder, rate: aRate, set: aSet })[tab]();
   } catch (e) { $("#ab").innerHTML = `<p class="err">${esc(msg(e))}</p>`; }
+}
+function aRate() {
+  const qt = topics.filter(t => t.quiz), max = qt.reduce((a, t) => a + t.quiz, 0);
+  let thr = 80; try { thr = +(localStorage.getItem("certThr") || 80); } catch (e) { }
+  const rows = users.map(u => { const q = u.quiz || {}; let sc = 0, n = 0; qt.forEach(t => { if (q[t.id]) { sc += q[t.id].score; n++; } }); return { u, sc, n, pct: max ? Math.round(sc / max * 100) : 0 }; })
+    .sort((a, b) => b.sc - a.sc || b.n - a.n);
+  $("#ab").innerHTML = `<div class="box"><b>Sertifikat shárti:</b> barlıq ${qt.length} temanıń testin tapsırıp, keminde <input id="thr" type="number" min="0" max="100" value="${thr}" style="width:80px;display:inline-block"> % ball jıynaw. Jámi múmkin ball: <b>${max}</b>.</div>
+  <div class="tw" style="margin-top:12px"><table><tr><th>#</th><th>Oqıwshı</th><th>Ball</th><th>%</th><th>Testler</th><th>Sertifikat</th><th></th></tr>${rows.map((r, i) => {
+    const ok = r.n == qt.length && r.pct >= thr;
+    return `<tr><td>${i + 1}</td><td><b>${esc(r.u.name || "")}</b><br><small>${esc(r.u.email || "")}</small></td><td><b>${r.sc}</b> / ${max}</td><td>${r.pct}%</td><td>${r.n} / ${qt.length}</td><td>${ok ? '<b class="up">✓ Beriledi</b>' : r.n < qt.length ? "<small>Testler tawsılmaǵan</small>" : '<small class="dn">Ball jetpeydi</small>'}</td><td>${r.n ? `<button class="mini" data-rz="${r.u.id}">Testlerin nollaw</button>` : ""}</td></tr>`; }).join("")}</table></div>`;
+  $("#thr").onchange = e => { try { localStorage.setItem("certThr", e.target.value); } catch (er) { } aRate(); };
+  root.querySelectorAll("[data-rz]").forEach(b => b.onclick = async () => { if (!confirm("Bul oqıwshınıń barlıq test nátiyjeleri óshiriledi, ol testlerdi qayta tapsıradı. Dawam etemiz be?")) return; const u = users.find(x => x.id == b.dataset.rz); await F.updateDoc(F.doc(db, "users", u.id), { quiz: {} }); u.quiz = {}; aRate(); });
 }
 function aStats() {
   const wk = Date.now() - 7 * 864e5, n = users.length;
@@ -179,10 +219,22 @@ async function aEdit(sel) {
   root.querySelectorAll("[data-ed]").forEach(b => b.onclick = () => slideEd(+b.dataset.ed));
   $("#ad").onclick = () => { edS.push({ k: "Jańa", h: "Jańa slayd", b: "<p>Tekst usı jerge jazıladı.</p>" }); aEdit(id); slideEd(edS.length - 1); };
   $("#tt").oninput = e => edT.title = e.target.value; $("#td").oninput = e => edT.desc = e.target.value;
+  $("#qb").onclick = async () => {
+    const f = $("#qf").files[0]; if (!f) { $("#qmm").innerHTML = '<p class="err">Aldın fayldı tańlań.</p>'; return; }
+    try {
+      $("#qmm").textContent = "Júklenbekte…"; const d = JSON.parse(await f.text()); await loadTopics(); let n = 0, k = 0;
+      for (const t of topics) {
+        const items = d[t.id] || [];
+        if (items.length) { await F.setDoc(F.doc(db, "quiz", t.id), { items }); n++; k += items.length; }
+        if ((t.quiz || 0) != items.length) await F.updateDoc(F.doc(db, "topics", t.id), { quiz: items.length });
+      }
+      $("#qmm").innerHTML = `<p class="ok">Tayar ✓ ${n} temaǵa ${k} soraw júklendi.</p>`; await loadTopics();
+    } catch (e) { $("#qmm").innerHTML = `<p class="err">${esc(msg(e))}</p>`; }
+  };
   $("#sv").onclick = async () => {
     try {
       await F.setDoc(F.doc(db, "content", id), { slides: edS });
-      await F.setDoc(F.doc(db, "topics", id), { title: edT.title, desc: edT.desc, order: edT.order, count: edS.length });
+      await F.setDoc(F.doc(db, "topics", id), { title: edT.title, desc: edT.desc, order: edT.order, count: edS.length, quiz: edT.quiz || 0 });
       $("#em").innerHTML = '<p class="ok">Saqlandı ✓</p>';
     } catch (e) { $("#em").innerHTML = `<p class="err">${esc(msg(e))}</p>`; }
   };
@@ -222,6 +274,7 @@ function aOrder() {
 function aSet() {
   $("#ab").innerHTML = `<div class="box"><b>Bastapqı mazmunnı júklew</b><p>Barlıq tema hám slaydtı bazaǵa júkleydi. <b class="dn">Ózgertken tekstleriń óship, bastapqı variantqa qaytadı.</b> Tek birinshi ret yamasa qayta tiklew ushın.</p><button class="gold" id="sd">Bastapqı mazmunnı júklew</button><div id="sm"></div></div>
   <div class="box" style="margin-top:12px;border-color:var(--gold)"><b>Kurstı jańalaw (v9) — 28 tema</b><p>1) content.json daǵı jańa temalardı qosadı, 2) temalar tártibin jańa izbe-izlikke qoyadı, 3) dostupı bar oqıwshılarǵa jańa temalardı da ashadı. <b>Ózgertken tekstleriń saqlanadı.</b></p><button class="gold" id="sv">Kurstı jańalaw</button><div id="svm"></div></div>
+  <div class="box" style="margin-top:12px;border-color:var(--gold)"><b>Testlerdi júklew (quiz.json)</b><p>Kompyuterińizdegi quiz.json faylın tańlań. Hár temanıń testi bazaǵa jazıladı (bar bolsa jańalanadı). Oqıwshılardıń aldınǵı nátiyjelerine tiymeydi.</p><input type="file" id="qf" accept=".json"><button class="gold" id="qb" style="margin-top:8px">Testlerdi júklew</button><div id="qmm"></div></div>
   <div class="box" style="margin-top:12px"><b>Jańa temalardı qosıw</b><p>content.json daǵı bazada joq temalardı ǵana qosadı. Ózgertken tekstlerge tiymeydi.</p><button class="gold" id="sn">Jetispegen temalardı qosıw</button><div id="sq"></div></div>
   <div class="box" style="margin-top:12px"><b>Jańa ózgertiwlerdi qollanıw (patch)</b><p>patch.json daǵı túzetilgen slaydlardı ǵana almastıradı (sol slaydlar jańa variantqa aylanadı). Basqa slaydlardaǵı ózgertiwleriń saqlanadı. Jańa temalar ushın "Jetispegen temalardı qosıw" túymesin basıń.</p><button class="gold" id="sp">Patch qollanıw</button><div id="spm"></div></div>
   <div class="box" style="margin-top:12px"><b>Bir temanı jańalaw</b><p>Tańlaǵan temanı content.json daǵı jańa variantqa almastıradı (tek sol temanıń ózgertiwleri óshedi, basqa temalarǵa tiymeydi).</p><select id="rt"></select><button class="gold" id="rb">Usı temanı jańalaw</button><div id="rm"></div></div>
@@ -230,7 +283,7 @@ function aSet() {
   $("#rb").onclick = async () => {
     const id = $("#rt").value; if (!id || !confirm("Tańlaǵan temanıń mazmunı bastapqı variantqa qaytadı (bul temadaǵı ózgertiwleriń óshedi). Dawam etemiz be?")) return;
     try { $("#rm").textContent = "Júklenbekte…"; const d = await (await fetch("content.json?v=" + Date.now())).json(), t = d.find(x => x.id == id);
-      await F.setDoc(F.doc(db, "content", id), { slides: t.slides }); { const ex = topics.find(x => x.id == id); await F.setDoc(F.doc(db, "topics", id), { title: t.title, desc: t.desc, order: ex ? ex.order : t.order, count: t.slides.length }); }
+      await F.setDoc(F.doc(db, "content", id), { slides: t.slides }); { const ex = topics.find(x => x.id == id); await F.setDoc(F.doc(db, "topics", id), { title: t.title, desc: t.desc, order: ex ? ex.order : t.order, count: t.slides.length, quiz: ex ? ex.quiz || 0 : 0 }); }
       $("#rm").innerHTML = '<p class="ok">Tayar ✓ ' + esc(t.title) + ' jańalandı (' + t.slides.length + ' slayd).</p>'; await loadTopics();
     } catch (e) { $("#rm").innerHTML = `<p class="err">${esc(msg(e))}</p>`; }
   };
@@ -243,7 +296,7 @@ function aSet() {
         const ref = F.doc(db, "content", tid), s = await F.getDoc(ref), slides = s.exists() ? s.data().slides : [];
         for (const it of by[tid]) { let i = it.h ? slides.findIndex(x => x.k === it.k && x.h === it.h) : -1; if (i < 0 && it.h) i = slides.findIndex(x => x.h === it.h); if (i < 0) i = slides.findIndex(x => x.k === it.k); if (i < 0) i = slides.findIndex(x => x.h === it.slide.h); if (i >= 0) { slides[i] = it.slide; rep++; } else { slides.push(it.slide); add++; } }
         await F.setDoc(ref, { slides }); const tp = topics.find(t => t.id == tid);
-        if (tp) await F.setDoc(F.doc(db, "topics", tid), { title: tp.title, desc: tp.desc, order: tp.order, count: slides.length });
+        if (tp) await F.setDoc(F.doc(db, "topics", tid), { title: tp.title, desc: tp.desc, order: tp.order, count: slides.length, quiz: tp.quiz || 0 });
       }
       $("#spm").innerHTML = `<p class="ok">Tayar ✓ ${rep} slayd jańalandı, ${add} slayd qosıldı (tabılmaǵanları sońına qosıladı).</p>`; await loadTopics();
     } catch (e) { $("#spm").innerHTML = `<p class="err">${esc(msg(e))}</p>`; }
@@ -254,7 +307,7 @@ function aSet() {
       $("#svm").textContent = "Júklenbekte…"; await loadTopics(); const d = await (await fetch("content.json?v=" + Date.now())).json(); let n = 0;
       for (const t of d) {
         const ex = topics.find(x => x.id == t.id);
-        if (!ex) { await F.setDoc(F.doc(db, "content", t.id), { slides: t.slides }); await F.setDoc(F.doc(db, "topics", t.id), { title: t.title, desc: t.desc, order: t.order, count: t.slides.length }); n++; }
+        if (!ex) { await F.setDoc(F.doc(db, "content", t.id), { slides: t.slides }); await F.setDoc(F.doc(db, "topics", t.id), { title: t.title, desc: t.desc, order: t.order, count: t.slides.length, quiz: (topics.find(x => x.id == t.id) || {}).quiz || 0 }); n++; }
         else if (ex.order != t.order) await F.updateDoc(F.doc(db, "topics", t.id), { order: t.order });
       }
       const ids = d.map(t => t.id); let u = 0;
@@ -274,7 +327,7 @@ function aSet() {
     if (!confirm("Barlıq mazmun bastapqı variantqa qaytadı. Dawam etemiz be?")) return;
     try {
       $("#sm").textContent = "Júklenbekte…"; const d = await (await fetch("content.json")).json(); await loadTopics(); const ordOf = {}; topics.forEach(x => ordOf[x.id] = x.order);
-      for (const t of d) { await F.setDoc(F.doc(db, "content", t.id), { slides: t.slides }); await F.setDoc(F.doc(db, "topics", t.id), { title: t.title, desc: t.desc, order: ordOf[t.id] ?? t.order, count: t.slides.length }); }
+      for (const t of d) { await F.setDoc(F.doc(db, "content", t.id), { slides: t.slides }); await F.setDoc(F.doc(db, "topics", t.id), { title: t.title, desc: t.desc, order: ordOf[t.id] ?? t.order, count: t.slides.length, quiz: (topics.find(x => x.id == t.id) || {}).quiz || 0 }); }
       $("#sm").innerHTML = '<p class="ok">Tayar ✓ ' + d.length + ' tema júklendi.</p>'; await loadTopics();
     } catch (e) { $("#sm").innerHTML = `<p class="err">${esc(msg(e))}</p>`; }
   };

@@ -12,10 +12,16 @@ service cloud.firestore {
       allow create: if signedIn() && request.auth.uid == uid
         && request.resource.data.unlocked.size() == 0;
       allow update: if isAdmin() || (signedIn() && request.auth.uid == uid
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['lastLogin','viewed','name']));
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['lastLogin','viewed','name','quiz']));
     }
     match /topics/{id} {
       allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+    match /quiz/{id} {
+      allow read: if isAdmin() || (signedIn()
+        && id in userDoc().unlocked
+        && userDoc().accessUntil > request.time);
       allow write: if isAdmin();
     }
     match /content/{id} {

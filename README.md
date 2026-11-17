@@ -56,3 +56,9 @@ Jańa `content.json` dı GitHub ke júkleseńiz, Admin → Sazlaw → **Jetispeg
 
 ## Temalar tártibin ózgertiw (v8)
 Admin → **Temalar tártibi**: kerekli nomerdi jazıp OK basıń (mısalı 9-temanı 2 ge) yamasa ↑ ↓. Tártip oqıwshılar ushın izbe-izlik bolıp esaplanadı. Firestore Rules ti qayta Publish etiwdiń keregi joq.
+
+## v9: 28 tema, video sabaqlar izbe-izliginde
+1. Barlıq fayllardı GitHub ke júkleń (eskileriniń ornına, jańa .jpg súwretler de kerek).
+2. Saytqa admin bolıp kiriń → ⚙ Admin → Sazlaw → **Kurstı jańalaw** túymesin basıń (jańa 17 tema qosıladı, tártip jańalanadı, dostupı bar oqıwshılarǵa jańa temalar ashıladı).
+3. Keyin **Patch qollanıw** túymesin basıń (eski 11 temadaǵı til dúzetiwleri).
+Ózgertken tekstleriń saqlanadı. Firestore Rules ti qayta Publish etiwdiń keregi joq.

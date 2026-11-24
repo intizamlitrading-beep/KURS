@@ -152,27 +152,99 @@ th{color:var(--gold);font-size:12px;letter-spacing:.1em;text-transform:uppercase
 @keyframes gx{from{transform:scaleX(0)}}@keyframes gy{from{transform:scaleY(0)}}
 .gx{transform-box:fill-box;transform-origin:left;animation:gx 1.2s .5s both}.gy{transform-box:fill-box;transform-origin:bottom;animation:gy .8s .3s both}
 
-/* ---- Telefon ---- */
-@media (max-width:860px){
-  .auth-wrap{grid-template-columns:1fr;gap:26px;padding:28px 16px 50px;align-items:start;min-height:0}
-  .auth-wrap .auth{justify-self:stretch;max-width:none}
-  .auth-intro h1{font-size:32px}
-  .auth-intro .checks{display:none}
-}
-@media (max-width:640px){
-  header{padding:8px 12px;padding-top:calc(8px + env(safe-area-inset-top,0px));gap:10px}
-  header img{width:36px;height:36px}
-  header b{font-size:13px}
-  header small{display:none}
-  header>div:last-child{flex-wrap:nowrap!important;gap:6px!important}
-  header button{padding:7px 10px;font-size:13.5px}
-  main{padding:18px 12px 50px}
-  .nav{flex-wrap:wrap}
-  .nav .dots{order:-1;width:100%;margin:0 0 12px;gap:6px}
-  .nav button{flex:1;padding:12px 10px}
-  .slide{padding:18px 14px;border-radius:20px}
-  .row{grid-template-columns:1fr}
-  .auth{padding:22px}
-  input,select{font-size:16px}
-}
+/* ---- Header túymeleri ---- */
+header .hb{margin-left:auto;display:flex;gap:8px;flex-wrap:nowrap}
+header .hb button{display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+.ic{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .note+.grid{margin-top:16px}
+html,body{overflow-x:clip}
+
+/* =====================================================================
+   PLANSHET (641px – 1023px)
+   ===================================================================== */
+@media (max-width:1023px){
+  main{max-width:none;padding:24px 22px 60px}
+  .slide{animation:up .5s both}
+  .grid{grid-template-columns:repeat(2,1fr)}
+  /* Kiriw beti: eki bagana, biraq ıqshamıraq */
+  .auth-wrap{grid-template-columns:1fr 1fr;gap:28px;padding:40px 22px}
+  .auth-intro h1{font-size:34px}
+  .auth{padding:24px}
+  /* Admin bólimleri bir qatarda, shetke jıljıtıladı */
+  .atabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin:0 -22px 16px;padding:2px 22px 6px}
+  .atabs::-webkit-scrollbar{display:none}
+  .atabs button{flex:none}
+  /* Admin kesteleri kartaǵa aylanadı */
+  .rt{border:0;background:none;padding:0;overflow:visible}
+  .rt table,.rt tbody,.rt tr,.rt td{display:block;width:100%}
+  .rt tbody{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  .rt tr.hd{display:none}
+  .rt tr{border:1px solid var(--line);border-radius:16px;padding:12px 14px;background:linear-gradient(180deg,rgba(26,21,25,.95),rgba(18,16,20,.95))}
+  .rt td{border:0;padding:6px 0;display:flex;gap:12px;justify-content:space-between;align-items:baseline;text-align:right}
+  .rt td[data-label]::before{content:attr(data-label);color:var(--gold);font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;text-align:left;flex:none}
+  .rt td.ttl{display:block;text-align:left;padding:0 0 8px;margin-bottom:4px;border-bottom:1px solid var(--line)}
+  .rt td.ttl+td.ttl{border-top:0}
+  .rt td .no{display:inline-grid;place-items:center;min-width:28px;height:28px;border-radius:8px;background:rgba(230,194,122,.12);color:var(--gold);font-weight:800}
+  .rt td.ttl:has(.no){border-bottom:0;padding-bottom:4px;margin-bottom:0}
+  .rt td.blk{display:block;text-align:left}
+  .rt td.blk[data-label]::before{display:block;margin-bottom:6px}
+  .rt td.acts{display:flex;flex-wrap:wrap;gap:6px}
+  .rt td.acts::before{width:100%;margin-bottom:0}
+  .rt td.acts .hbr{display:none}
+  .rt .chip{min-width:34px;padding:5px 8px}
+}
+
+/* =====================================================================
+   TELEFON (≤ 640px)
+   ===================================================================== */
+@media (max-width:640px){
+  body{font-size:15.5px}
+  header{padding:8px 12px;padding-top:calc(8px + env(safe-area-inset-top,0px));gap:10px}
+  header img{width:36px;height:36px;border-radius:10px}
+  header b{font-size:13px}
+  header b em{font-size:9px}
+  header small{display:none}
+  header .hb{gap:6px}
+  header .hb button{width:40px;height:40px;padding:0;justify-content:center;border-radius:12px}
+  header .hb .lb{display:none}
+  .ic{width:19px;height:19px}
+
+  main{padding:16px 12px 40px}
+  h1{font-size:28px}
+  .sub{font-size:14.5px}
+  .grid{grid-template-columns:1fr;gap:10px}
+  .tc{padding:16px}
+  .tc h3{font-size:17px}
+
+  /* Slaydlar: tolıq kenlikte, tómende turaqlı navigaciya */
+  .slide{padding:18px 14px;border-radius:18px;min-height:0;animation:up .45s both}
+  .slide h2{font-size:22px}
+  .slide p,.pts li{font-size:15px}
+  .row{grid-template-columns:1fr}
+  .opt{gap:10px;padding:12px}.opt img{width:84px;height:52px}
+  .tw table{font-size:13px}
+  th,td{padding:7px 6px}
+  .nav{position:sticky;bottom:0;z-index:15;flex-wrap:wrap;margin:14px -12px 0;padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));background:rgba(10,9,11,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line)}
+  .nav .dots{order:-1;width:100%;margin:0 0 10px;gap:6px}
+  .dots i{width:8px;height:8px}
+  .nav button{flex:1;padding:13px 10px;font-size:15px}
+
+  /* Kiriw beti: bir bagana */
+  .auth-wrap{grid-template-columns:1fr;gap:22px;padding:24px 14px 40px;align-items:start;min-height:0}
+  .auth-wrap .auth{justify-self:stretch;max-width:none}
+  .auth-intro h1{font-size:30px}
+  .auth-intro .lead{font-size:15px}
+  .auth-intro .checks{display:none}
+  .brand{margin-bottom:16px}
+  .auth{padding:20px;border-radius:20px}
+  input,select{font-size:16px}
+
+  /* Admin */
+  .atabs{margin:0 -12px 14px;padding:2px 12px 6px}
+  .stat{grid-template-columns:1fr 1fr;gap:8px}
+  .stat .box b{font-size:22px}
+  .rt tbody{grid-template-columns:1fr}
+  .srow{flex-wrap:wrap}
+  .srow span{flex-basis:calc(100% - 120px)}
+  .box{padding:12px}
+}

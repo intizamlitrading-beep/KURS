@@ -4,11 +4,13 @@ const { initializeApp } = await import(B + "firebase-app.js");
 const A = await import(B + "firebase-auth.js");
 const F = await import(B + "firebase-firestore.js");
 const fapp = initializeApp(firebaseConfig);
-const auth = A.getAuth(fapp), db = F.getFirestore(fapp);
+const auth = A.getAuth(fapp);
+// Long-polling avto: ayırım internet/Telegram brauzerlerinde "client is offline" qáteligin saplastıradı
+let db; try { db = F.initializeFirestore(fapp, { experimentalAutoDetectLongPolling: true }); } catch (e) { db = F.getFirestore(fapp); }
 const root = document.getElementById("app");
 const $ = (s, r = document) => r.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-const fx = s => String(s || "").replace(/assets\/img\//g, "").replace(/src="([\w-]+\.jpg)"/g, 'src="$1?v=11"');
+const fx = s => String(s || "").replace(/assets\/img\//g, "").replace(/src="([\w-]+\.jpg)"/g, 'src="$1?v=12"');
 const fmt = t => t && t.toDate ? t.toDate().toLocaleString("ru-RU") : "—";
 const ADM = ADMIN_EMAILS.map(x => x.toLowerCase());
 const ERR = {
@@ -16,33 +18,78 @@ const ERR = {
   "auth/user-not-found": "Bunday paydalanıwshı tabılmadı.", "auth/email-already-in-use": "Bul email dizimnen ótken. Kiriwdi sına.",
   "auth/weak-password": "Parol keminde 6 belgi bolsın.", "auth/invalid-email": "Email qáte jazılǵan.",
   "auth/too-many-requests": "Kóp urınıs boldı. Biraz kútip qayta sına.", "auth/network-request-failed": "Internet joq.",
-  "permission-denied": "Ruxsat joq."
+  "auth/invalid-login-credentials": "Email yamasa parol qáte.", "auth/missing-password": "Paroldi jazıń.",
+  "auth/missing-email": "Emaildi jazıń.", "auth/user-disabled": "Bul akkaunt bloklanǵan.",
+  "auth/operation-not-allowed": "Firebase-te Email/Password kiriw qosılmaǵan (Authentication → Sign-in method).",
+  "auth/unauthorized-domain": "Bul sayt adresi Firebase → Authentication → Settings → Authorized domains dizimine qosılmaǵan.",
+  "auth/popup-closed-by-user": "Ayna jabıldı.", "auth/internal-error": "Serverde qátelik. Qayta sınap kóriń.",
+  "permission-denied": "Ruxsat joq (Firestore rules tekseriń).", "unavailable": "Server menen baylanıs joq. Internetti tekserip, qayta sınap kóriń.",
+  "failed-precondition": "Bazada qátelik (failed-precondition). Betti jańalań."
 };
-const msg = e => ERR[e.code] || ("Qátelik: " + (e.code || e.message));
+const msg = e => ERR[e && e.code] || (/offline/i.test((e && e.message) || "") ? ERR.unavailable : "Qátelik: " + ((e && (e.code || e.message)) || e));
+window.errText = msg;
 let me = null, prof = null, topics = [], isAdmin = false, pendingName = "";
 const uref = () => F.doc(db, "users", me.uid);
 
 /* ---------- Kiriw / dizimnen ótiw / parol tiklaw ---------- */
+const EYE = '<svg viewBox="0 0 24 24"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+const EYE_OFF = '<svg viewBox="0 0 24 24"><path d="M3 3l18 18"/><path d="M10.6 5.1A10.6 10.6 0 0 1 12 5c6.4 0 10 7 10 7a17.6 17.6 0 0 1-3.2 4.1M6.6 6.6C3.8 8.4 2 12 2 12s3.6 7 10 7c1.8 0 3.4-.5 4.8-1.3"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>';
 function authView(mode = "in", note = "") {
-  root.innerHTML = `<div class="auth"><div style="text-align:center"><img src="logo.jpg?v=11" width="90" style="border-radius:50%"><h2>Intizamli Trading</h2><small style="color:var(--mut)">Intizam • Sabır • Natije</small></div>
-  <div class="tabs" style="margin-top:16px"><button data-m="in" class="${mode == "in" ? "on" : ""}">Kiriw</button><button data-m="up" class="${mode == "up" ? "on" : ""}">Dizimnen ótiw</button></div>
-  <form id="f">${mode == "up" ? `<label>Atıńız</label><input id="n" required>` : ""}
-  <label>Email</label><input id="e" type="email" required autocomplete="email">
-  ${mode == "reset" ? "" : `<label>Parol</label><input id="p" type="password" minlength="6" required autocomplete="${mode == "in" ? "current-password" : "new-password"}">`}
-  <button class="gold full">${mode == "in" ? "Kiriw" : mode == "up" ? "Dizimnen ótiw" : "Link jiberiw"}</button></form>
-  ${mode == "in" ? `<p style="text-align:center"><button class="lnk" id="fg">Parolıńızdı umıttıńızba?</button></p>` : ""}
-  ${mode == "reset" ? `<p style="text-align:center"><button class="lnk" id="bk">← Kiriwge qaytıw</button></p>` : ""}
-  <div id="m" class="${note.startsWith("!") ? "err" : "ok"}">${esc(note.replace(/^!/, ""))}</div></div>`;
+  const T = { in: ["Kiriw", "Xosh keldińiz! Email hám parolıńızdı jazıń."], up: ["Dizimnen ótiw", "Akkaunt jasań — admin sizge sabaqlıqlardı ashıp beredi."], reset: ["Paroldi tiklew", "Emailińizdi jazıń — jańa parol qoyıw linki poshtaǵa keledi."] }[mode];
+  root.innerHTML = `<div class="auth-wrap">
+  <div class="auth-intro">
+    <div class="brand"><img src="logo.jpg?v=12" alt="logo"><div>INTIZAMLI<em>TRADING CLUB</em></div></div>
+    <div class="eyebrow">Intizamli Trading · Kurs</div>
+    <h1>Treydingti <span>sistema menen</span> úyreniń</h1>
+    <p class="lead">«Treyding nolden nátiyjege shekem» kursınıń sabaqlıqları, testleri hám sertifikatı — bir jerde.</p>
+    <ul class="checks">
+      <li><span class="tick">✓</span><span><b>Izbe-iz sabaqlar</b> — hár tema slayd hám mısallar menen</span></li>
+      <li><span class="tick">✓</span><span><b>Testler</b> — hár temadan soń bilimińizdi tekseriń</span></li>
+      <li><span class="tick">✓</span><span><b>Sertifikat</b> — kurstı tamamlaǵanlarǵa</span></li>
+    </ul>
+  </div>
+  <div class="auth">
+    ${mode == "reset" ? "" : `<div class="tabs"><button type="button" data-m="in" class="${mode == "in" ? "on" : ""}">Kiriw</button><button type="button" data-m="up" class="${mode == "up" ? "on" : ""}">Dizimnen ótiw</button></div>`}
+    <h2>${T[0]}</h2><p class="hint">${T[1]}</p>
+    <form id="f" novalidate>${mode == "up" ? `<label for="n">Atıńız</label><input id="n" autocomplete="name" placeholder="Mısalı: Aybek">` : ""}
+    <label for="e">Email</label><input id="e" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" placeholder="siz@gmail.com">
+    ${mode == "reset" ? "" : `<label for="p">Parol</label><div class="pw"><input id="p" type="password" autocomplete="${mode == "in" ? "current-password" : "new-password"}" placeholder="${mode == "up" ? "Keminde 6 belgi" : "Parolıńız"}"><button type="button" class="eye" id="eye" aria-label="Paroldi kórsetiw" title="Paroldi kórsetiw">${EYE}</button></div>`}
+    <button class="gold" id="sb" type="submit"><span>${mode == "in" ? "Kiriw" : mode == "up" ? "Dizimnen ótiw" : "Link jiberiw"}</span><span class="ar">→</span></button></form>
+    ${mode == "in" ? `<p style="text-align:center;margin:16px 0 0"><button type="button" class="lnk" id="fg">Parolıńızdı umıttıńız ba?</button></p>` : ""}
+    ${mode == "reset" ? `<p style="text-align:center;margin:16px 0 0"><button type="button" class="lnk" id="bk">← Kiriwge qaytıw</button></p>` : ""}
+    <div id="m" class="${note.startsWith("!") ? "err" : "ok"}">${esc(note.replace(/^!/, ""))}</div>
+  </div></div>`;
   root.querySelectorAll("[data-m]").forEach(b => b.onclick = () => authView(b.dataset.m));
   const fg = $("#fg"); if (fg) fg.onclick = () => authView("reset");
   const bk = $("#bk"); if (bk) bk.onclick = () => authView("in");
+  const eye = $("#eye");
+  if (eye) eye.onclick = () => {
+    const p = $("#p"), show = p.type == "password"; p.type = show ? "text" : "password";
+    eye.innerHTML = show ? EYE_OFF : EYE; eye.classList.toggle("on", show);
+    const t = show ? "Paroldi jasırıw" : "Paroldi kórsetiw"; eye.title = t; eye.setAttribute("aria-label", t); p.focus();
+  };
+  const say = (t, ok) => { const m = $("#m"); if (m) { m.className = ok ? "ok" : "err"; m.textContent = t; } };
+  let busy = false;
   $("#f").onsubmit = async ev => {
-    ev.preventDefault(); const e = $("#e").value.trim(), p = $("#p") ? $("#p").value : "";
+    ev.preventDefault(); if (busy) return;
+    const e = $("#e").value.trim().toLowerCase(), p = $("#p") ? $("#p").value : "", n = $("#n") ? $("#n").value.trim() : "";
+    if (mode == "up" && n.length < 2) return say("Atıńızdı jazıń.");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e)) return say("Email qáte jazılǵan. Mısalı: siz@gmail.com");
+    if (mode != "reset" && !p) return say("Paroldi jazıń.");
+    if (mode == "up" && p.length < 6) return say("Parol keminde 6 belgi bolsın.");
+    const sb = $("#sb"), lbl = sb.firstElementChild.textContent;
+    busy = true; sb.disabled = true; sb.firstElementChild.innerHTML = '<span class="spin"></span> Kútiń…'; say("", true);
     try {
       if (mode == "in") await A.signInWithEmailAndPassword(auth, e, p);
-      else if (mode == "up") { pendingName = $("#n").value.trim(); await A.createUserWithEmailAndPassword(auth, e, p); }
-      else { await A.sendPasswordResetEmail(auth, e); authView("reset", "Eger bul email dizimnen ótken bolsa, jańa parol qoyıw linki jiberildi. Poshtańızdı (Spam di de) tekseriń."); }
-    } catch (er) { $("#m").className = "err"; $("#m").textContent = msg(er); }
+      else if (mode == "up") {
+        pendingName = n; const c = await A.createUserWithEmailAndPassword(auth, e, p);
+        try { await A.updateProfile(c.user, { displayName: n }); } catch (_) { }
+      }
+      else { await A.sendPasswordResetEmail(auth, e); return authView("reset", "Eger bul email dizimnen ótken bolsa, jańa parol qoyıw linki jiberildi. Poshtańızdı (Spam di de) tekseriń."); }
+    } catch (er) {
+      say(msg(er));
+      if (mode == "up" && er.code == "auth/email-already-in-use") { const m = $("#m"); m.insertAdjacentHTML("beforeend", ' <button type="button" class="lnk" id="gi">Kiriw →</button>'); $("#gi").onclick = () => { authView("in"); $("#e").value = e; }; }
+    } finally { busy = false; if (document.body.contains(sb)) { sb.disabled = false; sb.firstElementChild.textContent = lbl; } }
   };
 }
 
@@ -50,7 +97,7 @@ function authView(mode = "in", note = "") {
 async function loadProfile() {
   const r = uref(); let s = await F.getDoc(r);
   if (!s.exists()) {
-    const name = pendingName || me.displayName || me.email.split("@")[0];
+    const name = pendingName || me.displayName || (me.email || "").split("@")[0];
     await F.setDoc(r, { email: me.email, name, unlocked: [], viewed: {}, createdAt: F.serverTimestamp(), lastLogin: F.serverTimestamp() });
   } else await F.updateDoc(r, { lastLogin: F.serverTimestamp() });
   prof = (await F.getDoc(r)).data();
@@ -64,10 +111,10 @@ async function loadTopics() {
 A.onAuthStateChanged(auth, async u => {
   if (!u) { me = null; authView(); return; }
   me = u; isAdmin = ADM.includes((u.email || "").toLowerCase());
-  root.innerHTML = '<p style="text-align:center;margin-top:80px">Júklenbekte…</p>';
-  try { await loadProfile(); await loadTopics(); home(); } catch (e) { root.innerHTML = `<div class="auth"><p class="err">${esc(msg(e))}</p><button class="gold full" id="lo">Shıǵıw</button></div>`; $("#lo").onclick = () => A.signOut(auth); }
+  root.innerHTML = '<p class="loading"><span class="spin"></span> Júklenbekte…</p>';
+  try { await loadProfile(); await loadTopics(); home(); } catch (e) { root.innerHTML = `<div class="auth"><h2>Júklewde qátelik</h2><p class="err">${esc(msg(e))}</p><button class="gold full" id="rl">Qayta urınıw</button><button class="full" id="lo">Shıǵıw</button></div>`; $("#rl").onclick = () => location.reload(); $("#lo").onclick = () => A.signOut(auth); }
 });
-const head = (extra = "") => `<header><img src="logo.jpg?v=11" alt="logo" id="lg"><div><b>INTIZAMLI_TRADING</b><br><small style="color:var(--mut)">${esc(prof.name)} · ${esc(me.email)}</small></div><div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap">${extra}${isAdmin ? '<button id="adm">⚙ Admin</button>' : ""}<button id="out">Shıǵıw</button></div></header>`;
+const head = (extra = "") => `<header><img src="logo.jpg?v=12" alt="logo" id="lg"><div><b>INTIZAMLI<em>TRADING CLUB</em></b><small>${esc(prof.name)} · ${esc(me.email)}</small></div><div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap">${extra}${isAdmin ? '<button id="adm">⚙ Admin</button>' : ""}<button id="out">Shıǵıw</button></div></header>`;
 function bindHead() {
   $("#out").onclick = () => A.signOut(auth); const a = $("#adm"); if (a) a.onclick = () => admin("stats"); $("#lg").onclick = home;
 }
@@ -90,7 +137,7 @@ function accessBanner() {
 }
 function home() {
   const TXT = { admin: "Admin ashqanda ashıladı", expired: "Dostup múddeti tawsıldı", seq: "Aldıńǵı temanı hám onıń testin tamamlasańız ashıladı" };
-  root.innerHTML = head() + `<main><h1>Trading <span>kursı</span></h1><p class="sub">Sabaqlıqlar izbe-izlikte ashıladı: temanı tolıq kórip, testin tapsırǵannan soń keyingisi ashıladı. Test ballarıńız boyınsha sertifikat beriledi.</p>${accessBanner()}<div class="grid">` +
+  root.innerHTML = head() + `<main><div class="eyebrow">Intizamli Trading · Kurs</div><h1>Treyding <span>kursı</span></h1><p class="sub">Sabaqlıqlar izbe-izlikte ashıladı: temanı tolıq kórip, testin tapsırǵannan soń keyingisi ashıladı. Test ballarıńız boyınsha sertifikat beriledi.</p>${accessBanner()}<div class="grid">` +
     topics.map((t, i) => {
       const st = topicState(t, i), open = st == "open", done = isDone(prof, t), seen = seenOf(prof, t.id).length;
       const pr = t.count ? Math.min(100, Math.round(seen / t.count * 100)) : 0;
@@ -100,7 +147,7 @@ function home() {
 }
 async function openTopic(id) {
   { const ti = topics.findIndex(x => x.id == id); if (ti < 0 || topicState(topics[ti], ti) != "open") { alert("Bul tema házir ashılmaydı."); return home(); } }
-  root.innerHTML = '<p style="text-align:center;margin-top:80px">Júklenbekte…</p>';
+  root.innerHTML = '<p class="loading"><span class="spin"></span> Júklenbekte…</p>';
   let slides;
   try { const s = await F.getDoc(F.doc(db, "content", id)); slides = (s.exists() ? s.data().slides : []).map(x => ({ ...x, b: fx(x.b) })); }
   catch (e) { alert(msg(e)); return home(); }
@@ -120,7 +167,7 @@ async function openTopic(id) {
   show();
 }
 async function runQuiz(t) {
-  root.innerHTML = '<p style="text-align:center;margin-top:80px">Júklenbekte…</p>';
+  root.innerHTML = '<p class="loading"><span class="spin"></span> Júklenbekte…</p>';
   let qs = [];
   qs = (await loadQuiz())[t.id] || [];
   if (!qs.length) { try { const s = await F.getDoc(F.doc(db, "quiz", t.id)); qs = s.exists() ? s.data().items || [] : []; } catch (e) { } }
@@ -158,7 +205,7 @@ async function track(id, sl, total) {
 let users = [];
 async function admin(tab = "stats") {
   if (!isAdmin) return home();
-  root.innerHTML = head('<button id="hm">← Oqıwshı kórinisi</button>') + `<main><h1>Admin <span>paneli</span></h1><div class="tabs">${[["stats", "Statistika"], ["users", "Oqıwshılar"], ["edit", "Mazmunnı ózgertiw"], ["order", "Temalar tártibi"], ["rate", "Reyting · Sertifikat"], ["set", "Sazlaw"]].map(x => `<button data-a="${x[0]}" class="${tab == x[0] ? "on" : ""}">${x[1]}</button>`).join("")}</div><div id="ab">Júklenbekte…</div></main>`;
+  root.innerHTML = head('<button id="hm">← Oqıwshı kórinisi</button>') + `<main><div class="eyebrow">Basqarıw</div><h1>Admin <span>paneli</span></h1><div class="tabs">${[["stats", "Statistika"], ["users", "Oqıwshılar"], ["edit", "Mazmunnı ózgertiw"], ["order", "Temalar tártibi"], ["rate", "Reyting · Sertifikat"], ["set", "Sazlaw"]].map(x => `<button data-a="${x[0]}" class="${tab == x[0] ? "on" : ""}">${x[1]}</button>`).join("")}</div><div id="ab">Júklenbekte…</div></main>`;
   bindHead(); $("#hm").onclick = home; root.querySelectorAll("[data-a]").forEach(b => b.onclick = () => admin(b.dataset.a));
   try {
     await loadTopics();
@@ -222,18 +269,6 @@ async function aEdit(sel) {
   root.querySelectorAll("[data-ed]").forEach(b => b.onclick = () => slideEd(+b.dataset.ed));
   $("#ad").onclick = () => { edS.push({ k: "Jańa", h: "Jańa slayd", b: "<p>Tekst usı jerge jazıladı.</p>" }); aEdit(id); slideEd(edS.length - 1); };
   $("#tt").oninput = e => edT.title = e.target.value; $("#td").oninput = e => edT.desc = e.target.value;
-  $("#qb").onclick = async () => {
-    const f = $("#qf").files[0]; if (!f) { $("#qmm").innerHTML = '<p class="err">Aldın fayldı tańlań.</p>'; return; }
-    try {
-      $("#qmm").textContent = "Júklenbekte…"; const d = JSON.parse(await f.text()); await loadTopics(); let n = 0, k = 0;
-      for (const t of topics) {
-        const items = d[t.id] || [];
-        if (items.length) { await F.setDoc(F.doc(db, "quiz", t.id), { items }); n++; k += items.length; }
-        if ((t.quiz || 0) != items.length) await F.updateDoc(F.doc(db, "topics", t.id), { quiz: items.length });
-      }
-      $("#qmm").innerHTML = `<p class="ok">Tayar ✓ ${n} temaǵa ${k} soraw júklendi.</p>`; await loadTopics();
-    } catch (e) { $("#qmm").innerHTML = `<p class="err">${esc(msg(e))}</p>`; }
-  };
   $("#sv").onclick = async () => {
     try {
       await F.setDoc(F.doc(db, "content", id), { slides: edS });
@@ -283,6 +318,18 @@ function aSet() {
   <div class="box" style="margin-top:12px"><b>Bir temanı jańalaw</b><p>Tańlaǵan temanı content.json daǵı jańa variantqa almastıradı (tek sol temanıń ózgertiwleri óshedi, basqa temalarǵa tiymeydi).</p><select id="rt"></select><button class="gold" id="rb">Usı temanı jańalaw</button><div id="rm"></div></div>
   <div class="box" style="margin-top:12px"><b>Admin:</b> ${esc(me.email)}<br><small>Admin emaili firebase-config.js hám firestore.rules da jazıladı.</small></div>`;
   (async () => { try { const d = await (await fetch("content.json?v=" + Date.now())).json(); $("#rt").innerHTML = d.map(t => `<option value="${t.id}">${esc(t.title)}</option>`).join(""); } catch (e) { } })();
+  $("#qb").onclick = async () => {
+    const f = $("#qf").files[0]; if (!f) { $("#qmm").innerHTML = '<p class="err">Aldın fayldı tańlań.</p>'; return; }
+    try {
+      $("#qmm").textContent = "Júklenbekte…"; const d = JSON.parse(await f.text()); await loadTopics(); let n = 0, k = 0;
+      for (const t of topics) {
+        const items = d[t.id] || [];
+        if (items.length) { await F.setDoc(F.doc(db, "quiz", t.id), { items }); n++; k += items.length; }
+        if ((t.quiz || 0) != items.length) await F.updateDoc(F.doc(db, "topics", t.id), { quiz: items.length });
+      }
+      $("#qmm").innerHTML = `<p class="ok">Tayar ✓ ${n} temaǵa ${k} soraw júklendi.</p>`; await loadTopics();
+    } catch (e) { $("#qmm").innerHTML = `<p class="err">${esc(msg(e))}</p>`; }
+  };
   $("#rb").onclick = async () => {
     const id = $("#rt").value; if (!id || !confirm("Tańlaǵan temanıń mazmunı bastapqı variantqa qaytadı (bul temadaǵı ózgertiwleriń óshedi). Dawam etemiz be?")) return;
     try { $("#rm").textContent = "Júklenbekte…"; const d = await (await fetch("content.json?v=" + Date.now())).json(), t = d.find(x => x.id == id);

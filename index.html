@@ -1,12 +1,26 @@
 <!DOCTYPE html><html lang="kaa"><head><meta charset="utf-8"><title>Intizamli Trading — Kurs</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<link rel="stylesheet" href="style.css?v=11"><link rel="icon" href="logo.jpg?v=11"></head>
-<body><div id="app"></div>
+<meta name="theme-color" content="#0a090b">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@1,700;1,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=12"><link rel="icon" href="logo.jpg?v=12"></head>
+<body><div id="app"><p class="loading"><span class="spin"></span> Júklenbekte…</p></div>
 <script>
-(function(){var shown=false;function show(m){if(shown)return;shown=true;var d=document.createElement('div');d.style.cssText='position:fixed;left:12px;right:12px;bottom:12px;z-index:9999;background:#2a0f12;color:#ffb4b4;border:1px solid #ef5a5a;border-radius:12px;padding:12px;font:14px/1.4 system-ui';d.innerHTML='<b>Qátelik:</b> '+String(m).replace(/</g,'&lt;')+'<br><small>Usı jazıwdı skrinshot qılıp jiberiń.</small>';document.body.appendChild(d)}
-addEventListener('error',function(e){var t=e.target;if(t&&t.tagName&&t.tagName!=='SCRIPT'&&t.tagName!=='LINK')return;show(e.message||('Fayl júklenbedi: '+((t&&(t.src||t.href))||'')))},true);
-addEventListener('unhandledrejection',function(e){show(e.reason&&(e.reason.message||e.reason))});
+// Qátelik kórsetiw: tek saytımızdıń óz qátelerin kórsetedi, jabıw túymesi bar, 15 sekundtan soń ózi jabıladı.
+(function(){var box=null,tm=0;
+function show(m){m=String(m||'');
+  if(/^Script error\.?$/i.test(m)||/ResizeObserver|extension|chrome-extension|moz-extension|safari-extension|webkit-masked-url|__gCrWeb|zaloJSV2|telegram/i.test(m))return;
+  if(!box){box=document.createElement('div');box.style.cssText='position:fixed;left:12px;right:12px;bottom:12px;z-index:9999;background:#2a0f14;color:#ffc2c2;border:1px solid #ef6a6a;border-radius:14px;padding:12px 44px 12px 14px;font:14px/1.45 Manrope,system-ui;box-shadow:0 20px 50px -20px #000';document.body.appendChild(box)}
+  box.innerHTML='<b>Qátelik:</b> '+m.replace(/</g,'&lt;')+'<br><small style="color:#d9a3a3">Qaytalana berse, usı jazıwdı skrinshot qılıp jiberiń.</small><button aria-label="Jabıw" style="position:absolute;top:8px;right:8px;width:30px;height:30px;border-radius:9px;border:1px solid #6a2a33;background:none;color:#ffc2c2;cursor:pointer;font-size:16px;padding:0">✕</button>';
+  box.style.display='block';box.querySelector('button').onclick=function(){box.style.display='none'};
+  clearTimeout(tm);tm=setTimeout(function(){box.style.display='none'},15000)}
+window.showErr=show;
+addEventListener('error',function(e){var t=e.target;
+  if(t&&t.tagName){if(t.tagName==='SCRIPT'&&/app\.js|calc\.js|firebase/.test(t.src||''))show('Fayl júklenbedi: '+t.src+' (internetti tekseriń)');return}
+  var f=e.filename||'';if(f&&f.indexOf(location.origin)!==0&&f.indexOf('gstatic.com')<0)return;
+  show(e.message)},true);
+addEventListener('unhandledrejection',function(e){var r=e.reason;if(r&&r.code&&window.errText){show(window.errText(r));return}show(r&&(r.message||r))});
 if(location.protocol==='file:')show('Sayttı kompyuterden tikkeley ashpań. GitHub adresin ashıń: https://intizamlitrading-beep.github.io/KURS/');})();
 </script>
-<script src="calc.js?v=11"></script>
-<script type="module" src="app.js?v=11"></script></body></html>
+<script src="calc.js?v=12"></script>
+<script type="module" src="app.js?v=12"></script></body></html>
